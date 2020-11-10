@@ -1,0 +1,16 @@
+Package: seqBio
+Type: Package
+Title: Statistical significance of a pairwise alignment
+Version: 1.0
+Date: 2020-11-10
+Author: "Laura Julià Melis <laaurajulia@gmail.com> [aut]"
+Description: This package contains a function that shows the statistical significance of a pairwise alignment. 
+License: MIT + file LICENSE
+Encoding: UTF-8
+Depends: R (>= 3.5.0)
+Suggests: 
+    roxygen2,
+    testhat,
+    BiocManager,
+    Biostrings
+RoxygenNote: 7.1.1
