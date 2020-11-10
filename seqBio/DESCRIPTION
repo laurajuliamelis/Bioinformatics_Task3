@@ -7,10 +7,12 @@ Author: "Laura Julià Melis <laaurajulia@gmail.com> [aut]"
 Description: This package contains a function that shows the statistical significance of a pairwise alignment. 
 License: MIT + file LICENSE
 Encoding: UTF-8
+RoxygenNote: 6.1.1
+VignetteBuilder: knitr
 Depends: R (>= 3.5.0)
 Suggests: 
     roxygen2,
     testhat,
     BiocManager,
-    Biostrings
-RoxygenNote: 7.1.1
+    knitr,
+    rmarkdown
