@@ -6,7 +6,7 @@ El paquete seqBio contiene la función seq_alignment(), útil para estudiar la s
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-### Prerequisites
+### Prerequisitos
 
 El paquete necesita una instalación báscia del software R. Además, será necesaria también la instalación de varios paquetes: 
 
@@ -18,7 +18,7 @@ install.packages("reliaR")
 install.packages("gplots")
 ```
 
-### Installing
+### Instalación
 
 Para instalar este paquete, utiliza la siguiente linia de codigo:
 
@@ -26,7 +26,7 @@ Para instalar este paquete, utiliza la siguiente linia de codigo:
 devtools::install_github("laurajuliamelis/Bioinformatics_Task3", subdir="seqBio", build_vignettes=TRUE)
 ```
 
-### Help 
+### Ayuda 
 
 Para obtener más información acerca del paquete:
 ```
@@ -48,7 +48,7 @@ Para acceder a esta viñeta, se debe utilizar el siguiente código:
 ```
 browseVignettes('seqBio')
 ```
-## License
+## Licencia
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
