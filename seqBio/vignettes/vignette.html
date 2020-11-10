@@ -351,58 +351,75 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<div id="introduction." class="section level2">
-<h2>1. Introduction.</h2>
-<p>The <strong>awesomelab4</strong> package contains an object with class linreg, created with the RC object oriented system. This object is helpful to handle linear regression models as it provides multiple methods such as <code>resid()</code> and <code>coef()</code> to obtain the vector of residuals and the regressions coefficients of a given regression model, respectively.</p>
+<div id="introducción." class="section level2">
+<h2>1. Introducción.</h2>
+<p>El paquete <strong>seqBio</strong> contiene un solo objeto, que es la función <code>seq_alignment()</code>. Esta función es útil para estudiar la significación del alineamiento de secuencias y para ello, reliza el cálculo de la probabilidad de que la puntuación del alineamiento ha sido obtenida por azar (aplicando la estrategia de <em>shuffling</em>).</p>
 </div>
-<div id="statistics-calculations." class="section level2">
-<h2>2. Statistics calculations.</h2>
-<p>By default, tha class object calculates various statistics and stores them. This section aims to briefly explain these estimations. Let <span class="math inline">\(\boldsymbol{X}\)</span> be the matrix of independent variables and <span class="math inline">\(\boldsymbol{y}\)</span> the vector with the dependent variable values, then <code>linreg()</code> will estimate the following:</p>
-<p><strong>i. Regressions coefficients:</strong> <span class="math display">\[\hat{\beta}=(\boldsymbol{X}^{\boldsymbol{T}}\boldsymbol{X})^{-1} \boldsymbol{X}^{\boldsymbol{T}}\boldsymbol{y}\]</span> <strong>ii. The fitted values:</strong> <span class="math display">\[\hat{\boldsymbol{y}}= \boldsymbol{X}\hat{\beta}\]</span> <strong>iii. The residuals:</strong> <span class="math display">\[\boldsymbol{\hat{e}}= \boldsymbol{y}-\boldsymbol{\hat{y}}= \boldsymbol{y}- \boldsymbol{X}\hat{\beta}\]</span> <strong>iv. The degrees of freedom:</strong> <span class="math display">\[df=n-p\]</span> where <span class="math inline">\(n\)</span> is the number of observations and <span class="math inline">\(p\)</span> is the number of parameters in the model.</p>
-<p><strong>v. The residual variance:</strong> <span class="math display">\[\hat{\sigma}^2=\frac{\boldsymbol{e}^\boldsymbol{T}\boldsymbol{e}}{df}\]</span> <strong>vi. The variance of the regression coefficients:</strong> <span class="math display">\[\widehat{\boldsymbol{Var}}(\hat{\beta})=\hat{\sigma}^2(\boldsymbol{X}^{\boldsymbol{T}}\boldsymbol{X})^{-1}\]</span> <strong>vii. The t-values for each coefficient:</strong> <span class="math display">\[t_{\beta}=\frac{\hat{\beta}}{\sqrt{Var(\hat{\beta})}}\]</span></p>
-</div>
-<div id="linreg-description." class="section level2">
-<h2>3. linreg( ) description.</h2>
-<p>The class object <code>linreg()</code> stores the statistics seen in the section above as <em>fields</em> and contains multiple functions (<em>methods</em>) to obtain outputs related to linear regression models. The name and a brief description of each one is listed below.</p>
-<p><strong>1. Fields.</strong></p>
+<div id="argumentos-de-seq_alignment." class="section level2">
+<h2>2. Argumentos de seq_alignment().</h2>
+<p>La función <code>seq_alignment()</code> no tiene valores por defecto por lo que para ejecutarla, será <strong>siempre</strong> necesario dar valores a todos sus argumentos de entrada.</p>
+<p># 2. Comprobación de los inputs:</p>
 <ul>
-<li><code>formula:</code> an object of class “formula”.</li>
-<li><code>data:</code> a data frame.</li>
-<li><code>regression_coefficients:</code> the regression coefficients of the model calculated using the QR decomposition.</li>
-<li><code>fitted_values:</code> the fitted values.</li>
-<li><code>residuals:</code> the residuals. It is the difference between the real values and the fitted values.</li>
-<li><code>degrees_of_freedom:</code> the degrees of freedom: the number of observations minus the number of parameters in the model.</li>
-<li><code>residual_variance:</code> the residual variance.</li>
-<li><code>variance_of_coefficients:</code> the variance of the regression coefficients.</li>
-<li><code>std_error:</code> the standard error of the regression coefficients. It is the square root of the variance.</li>
-<li><code>t_values:</code> the t-values for each coefficient.</li>
-<li><code>p_values:</code> the p-values for each coefficient.</li>
+<li><code>seq1:</code> Secuencia 1 en formato Fasta (objeto de tipo carácter).</li>
+<li><code>seq2:</code> Secuencia 2 en formato Fasta (objeto de tipo carácter).</li>
+<li><code>seq_type:</code> Tipo de secuencia: “protein” o “dna” (objeto de tipo carácter).</li>
+<li><code>seq_align:</code> Tipo de alineamiento: “local” o “global” (objeto de tipo carácter).</li>
+<li><code>mat:</code> Matriz de substitución: PAMn, BLOSUM, … Ver  para ver todas las opciones disponibles.</li>
+<li><code>gap:</code> Puntuación Gap: Open penalty, extended penalty (objeto de tipo numérico: vector con dos valores).</li>
+<li><code>N:</code> Número de replicas (objeto de tipo numérico y entero).</li>
+<li><code>shuff:</code> Secuencia donde se hace shuffling: 1 o 2 (objeto de tipo numéricoy entero).</li>
 </ul>
-<p><strong>2. Methods.</strong></p>
-<ul>
-<li><code>initialize()</code> calculates all the statistics described in section <strong>2</strong> from formula and data.</li>
-<li><code>print()</code> prints out the coefficients and coefficient names.</li>
-<li><code>plot()</code> plots two different plots using ggplot2: “Residuals vs Fitted” and “Scale-Location”.</li>
-<li><code>resid()</code> returns the vector of residuals.</li>
-<li><code>pred()</code> returns the predicted values.</li>
-<li><code>coef()</code> returns the coefficients as a named vector.</li>
-</ul>
+<p>Cabe mencionar que la función hace una comprobación de las clases y los valores de los inputs, por lo que se obtendrá un <code>warning</code> cuando la clase, la longitud o los valores de uno o varios inputs no sean las correctas (las indicadas tanto sobre este párrafo como también en la ayuda de la función).</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co">#Comprobación de los inputs:</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">stopifnot</span>(<span class="kw">class</span>(seq1) <span class="op">==</span><span class="st"> &quot;character&quot;</span>, <span class="kw">class</span>(seq2) <span class="op">==</span><span class="st"> &quot;character&quot;</span>,</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">          seq_type <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;protein&quot;</span>, <span class="st">&quot;dna&quot;</span>), seq_align  <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;local&quot;</span>, <span class="st">&quot;global&quot;</span>),</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">          <span class="kw">class</span>(gap) <span class="op">==</span><span class="st"> &quot;numeric&quot;</span>, <span class="kw">class</span>(N) <span class="op">==</span><span class="st"> &quot;numeric&quot;</span>, <span class="kw">class</span>(shuff) <span class="op">==</span><span class="st"> &quot;numeric&quot;</span>,</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">          <span class="kw">length</span>(gap) <span class="op">==</span><span class="st"> </span><span class="dv">2</span>, <span class="kw">length</span>(N) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, shuff <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</a></code></pre></div>
 </div>
-<div id="example." class="section level2">
-<h2>4. Example.</h2>
+<div id="metodología." class="section level2">
+<h2>3. Metodología.</h2>
+<p>En esta sección se pretende explicar, paso a paso, cómo se realizó la creación de la función y qué cálculos se computan internamente.</p>
+<div id="lectura-de-las-secuencias." class="section level4">
+<h4>1. Lectura de las secuencias.</h4>
+</div>
+<div id="creación-de-una-funcion-de-haga-n-shufflings." class="section level4">
+<h4>2. Creación de una funcion de haga N shufflings.</h4>
+</div>
+<div id="alineamiento-original-óptimo." class="section level4">
+<h4>3. Alineamiento original (óptimo).</h4>
+</div>
+<div id="shuffling." class="section level4">
+<h4>4. Shuffling.</h4>
+</div>
+<div id="cálculos." class="section level4">
+<h4>5. Cálculos.</h4>
+<p><strong>Media y desv estándar de las puntiaciones.</strong></p>
+<p><strong>Estimación de los parámetros de la distribución Gumbel.</strong></p>
+<p><strong>Estimación de K</strong></p>
+<p><strong>Estandarización de la puntuación S</strong></p>
+<p><strong>Probabilidad que un alineamiento de secuencias al azar tenga una puntuación superior a la obtenida por azar.</strong></p>
+</div>
+</div>
+<div id="output-de-seq_alignment." class="section level2">
+<h2>4. <em>Output</em> de seq_alignment().</h2>
+<div id="resultado-gráfico" class="section level4">
+<h4>4.1. Resultado gráfico</h4>
+</div>
+<div id="resultado-numérico" class="section level4">
+<h4>4.2. Resultado numérico</h4>
+</div>
+</div>
+<div id="ejemplos." class="section level2">
+<h2>5. Ejemplos.</h2>
 <p>This section shows how to use <code>linreg()</code> on a well known dataset such as iris.</p>
-<div id="initialization." class="section level3">
-<h3>Initialization.</h3>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># Loading the dataset.</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">data</span>(iris) </a></code></pre></div>
-</div>
 </div>
 <div id="referencias." class="section level2">
 <h2>Referencias.</h2>
 <ul>
-<li>Reference Classes: <a href="http://adv-r.had.co.nz/R5.html" class="uri">http://adv-r.had.co.nz/R5.html</a></li>
-<li>QR decomposition: <a href="https://en.wikipedia.org/wiki/QR_decomposition" class="uri">https://en.wikipedia.org/wiki/QR_decomposition</a></li>
-<li>Vignettes: <a href="http://r-pkgs.had.co.nz/vignettes.html" class="uri">http://r-pkgs.had.co.nz/vignettes.html</a></li>
+<li>Creación de un paquete: <a href="https://support.rstudio.com/hc/en-us/articles/200486488-Developing-Packages-with-RStudio" class="uri">https://support.rstudio.com/hc/en-us/articles/200486488-Developing-Packages-with-RStudio</a></li>
+<li>Viñetas: <a href="http://r-pkgs.had.co.nz/vignettes.html" class="uri">http://r-pkgs.had.co.nz/vignettes.html</a></li>
+<li>Alineamiento de sequencias: <a href="https://a-little-book-of-r-for-bioinformatics.readthedocs.io/en/latest/src/chapter4.html" class="uri">https://a-little-book-of-r-for-bioinformatics.readthedocs.io/en/latest/src/chapter4.html</a></li>
+<li>Significación estadística: documento <em>Significación_estadistica.pdf</em> de Atenea.</li>
 </ul>
 </div>
 

@@ -20,7 +20,7 @@ seq_alignment(
 
 \item{seq2}{Secuencia 2 en formato Fasta.}
 
-\item{seq_type}{Tipo de secuencia: Proteina o ADN.}
+\item{seq_type}{Tipo de secuencia: "protein" o "dna"}
 
 \item{seq_align}{Tipo de alineamiento: "local" o "global".}
 
