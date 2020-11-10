@@ -26,6 +26,19 @@ Para instalar este paquete, utiliza la siguiente linia de codigo:
 devtools::install_github("laurajuliamelis/Bioinformatics_Task3", subdir="seqBio", build_vignettes=TRUE)
 ```
 
+### Help 
+
+Para obtener más información acerca del paquete:
+```
+?seqBio
+```
+
+Para buscar en la ayuda de la función seq_alignment(), utilizar el siguiente código:
+```
+?seq_alignment
+```
+En la ayuda se podrá encontrar una breve descripción del paquete, los argumentos y sus definiciones, los valores de salida, las referencias, y varios ejemplos.  
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
