@@ -60,9 +60,7 @@ The class object `linreg()` stores the statistics seen in the section above as *
 ## 4. Example.
 This section shows how to use `linreg()` on a well known dataset such as iris.
 ```{r include=FALSE}
-library(ggplot2)
-library(cowplot)
-library(awesomelab4)
+#hello
 ```
 
 ### Initialization.
@@ -70,36 +68,8 @@ library(awesomelab4)
 # Loading the dataset.
 data(iris) 
 
-# Setting "formula" and "data" arguments
-linreg_mod <- linreg$new(Petal.Length~Sepal.Width+Sepal.Length, data=iris)
 ```
 
-### Methods.
-**print()**
-```{r}
-linreg_mod$print()
-```
-
-**plot()**
-```{r plot1, fig.height=4, fig.width=7, fig.align="center"}
-plot1 <- linreg_mod$plot()
-plot1
-```
-
-**resid()**
-```{r}
-head(linreg_mod$resid())
-```
-
-**pred()**
-```{r}
-head(linreg_mod$pred())
-```
-
-**coef()**
-```{r}
-linreg_mod$coef()
-```
 
 ## References.
 * Reference Classes: <http://adv-r.had.co.nz/R5.html>
