@@ -71,7 +71,7 @@ data(iris)
 ```
 
 
-## References.
+## Referencias.
 * Reference Classes: <http://adv-r.had.co.nz/R5.html>
 * QR decomposition: <https://en.wikipedia.org/wiki/QR_decomposition>
 * Vignettes: <http://r-pkgs.had.co.nz/vignettes.html>
