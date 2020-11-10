@@ -1,9 +1,9 @@
 ---
-title: "awesomlab4: A linear regression package"
-author: "Martin Svensson and Laura Julià Melis"
+title: "seq_alignment: Una función para la significación del alineamiento de secuencias"
+author: "Laura Julià Melis"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{awesomelab4: A linear regression package}
+  %\VignetteIndexEntry{seq_alignment: Una función para la significación del alineamiento de secuencias}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
