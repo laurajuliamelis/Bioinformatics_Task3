@@ -5,7 +5,7 @@
 #' 
 #' @param seq1 Secuencia 1 en formato Fasta.
 #' @param seq2 Secuencia 2 en formato Fasta.
-#' @param seq_type Tipo de secuencia: Proteina o ADN.
+#' @param seq_type Tipo de secuencia: "protein" o "dna"
 #' @param seq_align Tipo de alineamiento: "local" o "global".
 #' @param mat Matriz de substitución: PAMn, BLOSUMn, … Ver \code{data(package="Biostrings")} para ver todas las opciones disponibles.
 #' @param gap Puntuación Gap: Open penalty, extended penalty.

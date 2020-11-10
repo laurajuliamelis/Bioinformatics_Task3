@@ -8,70 +8,72 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
-## 1. Introduction.
-The **awesomelab4** package contains an object with class linreg, created with the RC object oriented system. This object is helpful to handle linear regression models as it provides multiple methods such as `resid()` and `coef()` to obtain the vector of residuals and the regressions coefficients of a given regression model, respectively.
+## 1. Introducción.
 
-## 2. Statistics calculations. 
-By default, tha class object calculates various statistics and stores them. This section aims to briefly explain these estimations. Let $\boldsymbol{X}$ be the matrix of independent variables and $\boldsymbol{y}$ the vector with the dependent variable values, then `linreg()` will estimate the following:
+El paquete **seqBio** contiene un solo objeto, que es la función `seq_alignment()`. Esta función es útil para estudiar la significación del alineamiento de secuencias y para ello, reliza el cálculo de la probabilidad de que la puntuación del alineamiento ha sido obtenida por azar (aplicando la estrategia de *shuffling*).
 
-**i. Regressions coefficients:**
-$$\hat{\beta}=(\boldsymbol{X}^{\boldsymbol{T}}\boldsymbol{X})^{-1} \boldsymbol{X}^{\boldsymbol{T}}\boldsymbol{y}$$
-**ii. The fitted values:**
-$$\hat{\boldsymbol{y}}= \boldsymbol{X}\hat{\beta}$$
-**iii. The residuals:**
-$$\boldsymbol{\hat{e}}= \boldsymbol{y}-\boldsymbol{\hat{y}}= \boldsymbol{y}- \boldsymbol{X}\hat{\beta}$$
-**iv. The degrees of freedom:**
-$$df=n-p$$
-where $n$ is the number of observations and $p$ is the number of parameters in the model.
+## 2. Argumentos de seq_alignment(). 
 
-**v. The residual variance:**
-$$\hat{\sigma}^2=\frac{\boldsymbol{e}^\boldsymbol{T}\boldsymbol{e}}{df}$$
-**vi. The variance of the regression coefficients:**
-$$\widehat{\boldsymbol{Var}}(\hat{\beta})=\hat{\sigma}^2(\boldsymbol{X}^{\boldsymbol{T}}\boldsymbol{X})^{-1}$$
-**vii. The t-values for each coefficient:**
-$$t_{\beta}=\frac{\hat{\beta}}{\sqrt{Var(\hat{\beta})}}$$
+La función `seq_alignment()` no tiene valores por defecto por lo que para ejecutarla, será **siempre** necesario dar valores a todos sus argumentos de entrada.
 
-## 3. linreg( ) description.
-The class object `linreg()` stores the statistics seen in the section above as *fields* and contains multiple functions (*methods*) to obtain outputs related to linear regression models. The name and a brief description of each one is listed below. 
+  # 2. Comprobación de los inputs:
 
-**1. Fields.**
- 
-  - `formula:` an object of class "formula".
-  - `data:` a data frame.
-  - `regression_coefficients:` the regression coefficients of the model calculated using the QR decomposition.
-  - `fitted_values:` the fitted values.
-  - `residuals:` the residuals. It is the difference between the real values and the fitted values.
-  - `degrees_of_freedom:` the degrees of freedom: the number of observations minus the number of parameters in the model.
-  - `residual_variance:` the residual variance. 
-  - `variance_of_coefficients:` the variance of the regression coefficients.
-  - `std_error:` the standard error of the regression coefficients. It is the square root of the variance.
-  - `t_values:` the t-values for each coefficient.
-  - `p_values:` the p-values for each coefficient.
+  - `seq1:` Secuencia 1 en formato Fasta (objeto de tipo carácter).
+  - `seq2:` Secuencia 2 en formato Fasta (objeto de tipo carácter).
+  - `seq_type:` Tipo de secuencia: "protein" o "dna" (objeto de tipo carácter).
+  - `seq_align:` Tipo de alineamiento: "local" o "global" (objeto de tipo carácter).
+  - `mat:` Matriz de substitución: PAMn, BLOSUM, … Ver \code{data(package="Biostrings")} para ver todas las opciones disponibles.
+  - `gap:` Puntuación Gap: Open penalty, extended penalty (objeto de tipo numérico: vector con dos valores).
+  - `N:` Número de replicas (objeto de tipo numérico y entero).
+  - `shuff:` Secuencia donde se hace shuffling: 1 o 2 (objeto de tipo numéricoy entero).
+  
+Cabe mencionar que la función hace una comprobación de las clases y los valores de los inputs, por lo que se obtendrá un `warning` cuando la clase, la longitud o los valores de uno o varios inputs no sean las correctas (las indicadas tanto sobre este párrafo como también en la ayuda de la función).
 
-**2. Methods.**
- 
-  - `initialize()` calculates all the statistics described in section **2** from formula and data.
-  - `print()` prints out the coefficients and coefficient names.
-  - `plot()` plots two different plots using ggplot2: "Residuals vs Fitted" and "Scale-Location".
-  - `resid()` returns the vector of residuals.
-  - `pred()` returns the predicted values.
-  - `coef()` returns the coefficients as a named vector.
+```{r, eval = FALSE}
+#Comprobación de los inputs:
+stopifnot(class(seq1) == "character", class(seq2) == "character",
+          seq_type %in% c("protein", "dna"), seq_align  %in% c("local", "global"),
+          class(gap) == "numeric", class(N) == "numeric", class(shuff) == "numeric",
+          length(gap) == 2, length(N) == 1, shuff %in% c(1, 2))
+```
 
-## 4. Example.
+
+## 3. Metodología.
+
+En esta sección se pretende explicar, paso a paso, cómo se realizó la creación de la función y qué cálculos se computan internamente. 
+
+#### 1. Lectura de las secuencias.
+#### 2. Creación de una funcion de haga N shufflings.
+#### 3. Alineamiento original (óptimo).
+#### 4. Shuffling.
+#### 5. Cálculos.
+  
+**Media y desv estándar de las puntiaciones.**
+  
+**Estimación de los parámetros de la distribución Gumbel.**
+  
+**Estimación de K**
+
+**Estandarización de la puntuación S**
+
+**Probabilidad que un alineamiento de secuencias al azar tenga una puntuación superior a la obtenida por azar.**
+
+## 4. *Output* de seq_alignment().
+
+#### 4.1. Resultado gráfico
+
+#### 4.2. Resultado numérico
+
+
+## 5. Ejemplos.
 This section shows how to use `linreg()` on a well known dataset such as iris.
 ```{r include=FALSE}
 #hello
 ```
 
-### Initialization.
-```{r}
-# Loading the dataset.
-data(iris) 
-
-```
-
-
 ## Referencias.
-* Reference Classes: <http://adv-r.had.co.nz/R5.html>
-* QR decomposition: <https://en.wikipedia.org/wiki/QR_decomposition>
-* Vignettes: <http://r-pkgs.had.co.nz/vignettes.html>
+
+* Creación de un paquete: <https://support.rstudio.com/hc/en-us/articles/200486488-Developing-Packages-with-RStudio>
+* Viñetas: <http://r-pkgs.had.co.nz/vignettes.html>
+* Alineamiento de sequencias: <https://a-little-book-of-r-for-bioinformatics.readthedocs.io/en/latest/src/chapter4.html>
+* Significación estadística: documento *Significación_estadistica.pdf* de Atenea.
