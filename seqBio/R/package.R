@@ -1,10 +1,11 @@
 #' seqBio: A sequence alginment package.
 #'
-#' El paquete seqBio contiene una función llamada \code{seq_alignment()}. Esta función es 
-#' útil para estudiar la significación estadística de un alineamiento por parejas.
+#' El paquete seqBio contiene una función llamada \code{seq_alignment()}. 
 #' 
 #' @section Class object:
-#' \code{linreg()} calculates various statistics related to the linear regression model and contains multiple methods to obtain the regression coefficients or the predicted values, among others.
+#' 
+#' La función \code{seq_alignment()} es útil para estudiar la significación estadística de un alineamiento por parejas.
+#' Para más información ir a \code{?seq_alignment} o bien \code{browseVignettes('seqBio')}.
 #' 
 #' @author
 #' Laura Julia Melis.

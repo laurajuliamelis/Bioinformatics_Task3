@@ -24,7 +24,15 @@ Para instalar este paquete, utiliza la siguiente linia de codigo:
 
 ```
 devtools::install_github("laurajuliamelis/Bioinformatics_Task3", subdir="seqBio", build_vignettes=TRUE)
+library(seqBio)
 ```
+
+Luego, necesitarás cargar el paquete:
+
+```
+library(seqBio)
+```
+
 
 ### Ayuda 
 
