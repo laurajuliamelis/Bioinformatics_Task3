@@ -185,7 +185,7 @@ S_prima <- (lambda * S) - log( (K*m*n) )
 
 $$P(S \ge x) = 1-\exp(-e^{-\lambda(x-u)})$$
 
-*La probabilidad que una puntuación S' sea igual o superior a un valor x viene dada per la expresión:
+* La probabilidad que una puntuación S' sea igual o superior a un valor x viene dada per la expresión:
 
 $$P(S' \ge x) = 1-\exp(-e^{-x})$$
 
@@ -194,6 +194,10 @@ $$P(S' \ge x) = 1-\exp(-e^{-x})$$
 ```{r, eval = FALSE}
 prob2 <- sum(randomscores >= S) / N
 ```
+
+Podemos estimar que la probabilidad de obtener una puntuación tan grande como la puntuación de alineación real por azar es *prob2*, esto seria el p-valor. Si este valor es superior a 0.05 podemos concluir que las secuencias *seq1* y *seq2* no son más similares que dos secuencias aleatorias cualesquiera, por lo que probablemente no sean secuencias relacionadas.
+
+Dicho de otra forma, si el p-valor estimado es superior a 0.05, significaria que hay una probabilidad alta de que podamos obtener una puntuación de alineación tan alta como la puntuacion original $S$ solo por casualidad.
 
 * La probabilidad que un alineamiento de secuencias al azar tenga una puntuación superior a la obtenida por azar e calcula con la expresión:
 
