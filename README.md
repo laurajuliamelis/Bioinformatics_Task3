@@ -1,6 +1,6 @@
 # seqBio: An R package
 
-El paquete seqBio contiene la función seq_alignment(), útil para estudiar la significación estadística de un alineamiento por parejas.
+El paquete seqBio contiene la funcion seq_alignment(), util para estudiar la significacion estadistica de un alineamiento por parejas.
 
 ## Getting Started
 
@@ -24,7 +24,6 @@ Para instalar este paquete, utiliza la siguiente linia de codigo:
 
 ```
 devtools::install_github("laurajuliamelis/Bioinformatics_Task3", subdir="seqBio", build_vignettes=TRUE)
-library(seqBio)
 ```
 
 Luego, necesitarás cargar el paquete:
@@ -47,6 +46,13 @@ Para buscar en la ayuda de la función seq_alignment(), utilizar el siguiente c�
 ```
 En la ayuda se podrá encontrar una breve descripción del paquete, los argumentos y sus definiciones, los valores de salida, las referencias, y varios ejemplos.  
 
+Para obtener más información de la función generateSeqsWithMultinomialModel(), visitar la ayuda utilizando el siguiente código:
+
+```
+?generateSeqsWithMultinomialModel
+```
+Esta es una función necesaria para la ejecucion de seq_alignment().
+
 ### Vignette (informe dinámico)
 
 Adicionalmente, se puede acceder al informe dinámico del paquete para obtener una explicación más detallada y extensiva de la función seq_align().
@@ -56,6 +62,10 @@ Para acceder a esta viñeta, se debe utilizar el siguiente código:
 ```
 browseVignettes('seqBio')
 ```
+
+A continuación, pulsar el boton "**HTML**".
+s
+
 ## Licencia
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
