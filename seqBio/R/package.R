@@ -1,6 +1,6 @@
 #' seqBio: A sequence alginment package.
 #'
-#' El paquete seqBio contiene dos funciones: \code{seq_alignment()} y \code{generateSeqsWithMultinomialModel}. 
+#' El paquete seqBio contiene dos funciones: \code{seq_alignment()} y \code{generateSeqsWithMultinomialModel()}. 
 #' 
 #' @section Objects:
 #' La funcion \code{seq_alignment()} es util para estudiar la significacion estadistica de un alineamiento por parejas.
@@ -8,10 +8,10 @@
 #' 
 #' La funcion \code{generateSeqsWithMultinomialModel} genera un numero determinado de secuencias aleatorias 
 #' (de nucleotidos o de aminoacidos) de una longitud determinada mediante un modelo multinomial. Para mas
-#'  informacion dobre esta funcion ir a \code{?generateSeqsWithMultinomialModel}.
+#' informacion sobre esta funcion ir a \code{?generateSeqsWithMultinomialModel}.
 #' 
 #' Si se desea conocer mas sobre estas funciones a traves de un informe dinamico, 
-#' ejecutar el codigo: \code{browseVignettes('seqBio')}.
+#' ejecutar el codigo: \code{browseVignettes("seqBio")}.
 #' 
 #' @author
 #' Laura Julia Melis.
