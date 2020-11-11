@@ -49,7 +49,6 @@ seq_alignment <- function (seq1, seq2, seq_type = c("protein", "dna"), seq_align
                              gapOpening = gap[1], gapExtension = gap[2], scoreOnly = TRUE)  
   
   # 5. Shuffling:
-  
   if(shuff == 1){
     randomseqs <- generateSeqsWithMultinomialModel(as.character(s1[[1]]), N)
     randomscores <- double(N)

@@ -3,7 +3,7 @@ title: "seq_alignment: Una función para la significación del alineamiento de s
 author: "Laura Julià Melis"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{seq_alignment: Una función para la significación del alineamiento de secuencias}
+  %\VignetteIndexEntry{seq_alignment: Una funcion para la significacion del alineamiento de secuencias}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
@@ -51,28 +51,136 @@ s1 = readDNAStringSet(seq1, "fasta")
 s2 = readDNAStringSet(seq2, "fasta")
 ```
 
-#### 2. Creación de una funcion de haga N shufflings.
+#### 2. Alineamiento original (óptimo).
 
+El segundo paso es obtener la puntuacion $S$ del alineamiento original. Esto se lleva a cabo mediante la función `pairwiseAlignment()`. Con el argumento  `scoreOnly = TRUE` se indica que únicamente nos interesa almacenar la puntuación, ya que de no hacerlo, obtendríamos también como resultado las dos secuencias alineadas.
 
-#### 3. Alineamiento original (óptimo).
+El código utilizado para computar $S$ es el siguiente: 
 
 ```{r, eval = FALSE}
 S <- pairwiseAlignment(s1, s2, type = seq_align, substitutionMatrix = mat, 
                        gapOpening = gap[1], gapExtension = gap[2], scoreOnly = TRUE)  
 ```
 
-#### 4. Shuffling.
-#### 5. Cálculos.
+#### 3. Prodecimiento shuffling.
+
+Una vez obtenida la puntuación original, se debe aplicar la estrategia shuffling a la secuencia que se indica en el argumento de entrada `shuff = c(1,2)`.
+
+Para la realización de este punto, ha sido necesaria la creación de una función auxiliar, `generateSeqsWithMultinomialModel()`.
+
+
+#####  3.1. generateSeqsWithMultinomialModel()
+
+Los pasos que se siguen en esta función son:
+
+**1.** Cambiar la secuencia de entrada a un vector de letras (esto se lleva a cabo mediante la función `s2c()` del paquete *SeqinR*).
+**2.** Calcular las frecuencias de las letras en la secuencia de entrada *inputsequencevector* (de la que se desea generar secuencias aleatorias) mediante la función `table()`.
+**3.** Crear un vector de probabilidades (número de veces que aparece la letra en mi secuencia dividido entre la longitud total de la secuencia).
+**4.** Hacer X secuencias aleatorias usando la función `sample()` con el argumento *prob* igual a las probabilidades obtenidas en el paso anterior.
+**5.** Como resultado final se devuelve el vector de secuencias aleatorias.
+
+*Ejemplo*
+```{r, include=FALSE}
+library(seqBio)
+```
+
+```{r}
+generateSeqsWithMultinomialModel("ATTGGCACT",5)
+```
+
+Visitar `?generateSeqsWithMultinomialModel` para obtener más información.
+
+#####  3.2. Obtención de las puntuaciones aleatorias.
+
+Dependiendo de la secuencia donde se desee hacer el shuffling, la función `generateSeqsWithMultinomialModel()` se ejecuta sobre *seq1* o sobre *seq2*. Así pues, se obtiene un vector llamado *randomseqs* con las *N* secuencias aleatorias. 
+
+A continuación, se calculan las puntuaciones entre la secuencia intacta y cada una de las secuencias aleatorias. Las puntuaciones se almacenan en un vector *randomscores* de longitud *N*. 
+
+```{r, eval=FALSE}
+if(shuff == 1){
+  randomseqs <- generateSeqsWithMultinomialModel(as.character(s1[[1]]), N)
+  randomscores <- double(N)
   
-**Media y desv estándar de las puntiaciones.**
+  for (i in 1:N){
+    score <- pairwiseAlignment(randomseqs[i], s2, type = seq_align, substitutionMatrix = mat, 
+                               gapOpening = gap[1], gapExtension = gap[2], scoreOnly = TRUE)
+    randomscores[i] <- score
+  }
+    
+  } else {
+    randomseqs <- generateSeqsWithMultinomialModel(as.character(s2[[1]]), N)
+    randomscores <- double(N)
+    
+    for (i in 1:N){
+      score <- pairwiseAlignment(s1, randomseqs[i], type = seq_align, substitutionMatrix = mat, 
+                                 gapOpening = gap[1], gapExtension = gap[2], scoreOnly = TRUE)
+      randomscores[i] <- score
+    }
+}
+```
+
+
+#### 4. Cálculos estadísticos.
   
+**Media y desviación estándar de las puntiaciones.**
+
+Se calculan la media de las puntuaciones $\bar{x}$ y su desviación estándar $s$.
+
+*Código:*
+```{r, eval=FALSE}
+x <- mean(randomscores)
+s <- sd(randomscores)
+```
+
 **Estimación de los parámetros de la distribución Gumbel.**
-  
+
+Se estiman los parámetros de la distribución Gumbel con el método de los momentos. Sus fórmulas son:
+
+$$\hat{\lambda}= \frac{1.2825}{s}$$
+$$\hat{u}=\bar{x}-(0.45\cdot s)$$
+*Código:*
+```{r, eval=FALSE}
+lambda <- 1.2825 / s
+u <- x - (0.45*s)
+```
+
 **Estimación de K**
+
+$K$ es una constante que depende del sistema de puntuación i que verifica la relación:
+
+$$u = \frac{\ln(K \cdot m\cdot n)}{\lambda}$$
+donde $m$ i $n$ son las longitudes de las secuencias de alineamiento 1 y 2, respectivamente. 
+
+Su estimación se obtiene con la fórmula:
+
+$$\hat{K}= \frac{\exp(\hat{\lambda}\cdot \hat{u})}{m \cdot n}$$
+
+*Código:*
+```{r, eval=FALSE}
+m <- width(s1)
+n <- width(s2)
+K <- exp( (lambda*u) ) / (m*n)
+```
 
 **Estandarización de la puntuación S**
 
+La estandarización de las puntuaciones se obtiene con la fórmula:
+
+$$S'= \lambda S - \ln(K \cdot m \cdot n)$$
+
+*Código:*
+```{r, eval=FALSE}
+S_prima <- (lambda * S) - log( (K*m*n) )
+```
+
 **Probabilidad que un alineamiento de secuencias al azar tenga una puntuación superior a la obtenida por azar.**
+
+Si consideramos les puntuaciones estandarizadas, entonces la probabilidad que una puntuación S' sea igual o superior a un valor x viene dada per la expresión 
+
+*Código:*
+```{r, eval=FALSE}
+prob <- 1 - exp( exp(-S_prima))
+```
 
 ## 4. *Output* de seq_alignment().
 

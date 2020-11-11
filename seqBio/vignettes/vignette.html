@@ -385,24 +385,82 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">s1 =<span class="st"> </span><span class="kw">readDNAStringSet</span>(seq1, <span class="st">&quot;fasta&quot;</span>)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">s2 =<span class="st"> </span><span class="kw">readDNAStringSet</span>(seq2, <span class="st">&quot;fasta&quot;</span>)</a></code></pre></div>
 </div>
-<div id="creación-de-una-funcion-de-haga-n-shufflings." class="section level4">
-<h4>2. Creación de una funcion de haga N shufflings.</h4>
-</div>
 <div id="alineamiento-original-óptimo." class="section level4">
-<h4>3. Alineamiento original (óptimo).</h4>
+<h4>2. Alineamiento original (óptimo).</h4>
+<p>El segundo paso es obtener la puntuacion <span class="math inline">\(S\)</span> del alineamiento original. Esto se lleva a cabo mediante la función <code>pairwiseAlignment()</code>. Con el argumento <code>scoreOnly = TRUE</code> se indica que únicamente nos interesa almacenar la puntuación, ya que de no hacerlo, obtendríamos también como resultado las dos secuencias alineadas.</p>
+<p>El código utilizado para computar <span class="math inline">\(S\)</span> es el siguiente:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">S &lt;-<span class="st"> </span><span class="kw">pairwiseAlignment</span>(s1, s2, <span class="dt">type =</span> seq_align, <span class="dt">substitutionMatrix =</span> mat, </a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">                       <span class="dt">gapOpening =</span> gap[<span class="dv">1</span>], <span class="dt">gapExtension =</span> gap[<span class="dv">2</span>], <span class="dt">scoreOnly =</span> <span class="ot">TRUE</span>)  </a></code></pre></div>
 </div>
-<div id="shuffling." class="section level4">
-<h4>4. Shuffling.</h4>
+<div id="prodecimiento-shuffling." class="section level4">
+<h4>3. Prodecimiento shuffling.</h4>
+<p>Una vez obtenida la puntuación original, se debe aplicar la estrategia shuffling a la secuencia que se indica en el argumento de entrada <code>shuff = c(1,2)</code>.</p>
+<p>Para la realización de este punto, ha sido necesaria la creación de una función auxiliar, <code>generateSeqsWithMultinomialModel()</code>.</p>
+<div id="generateseqswithmultinomialmodel" class="section level5">
+<h5>3.1. generateSeqsWithMultinomialModel()</h5>
+<p>Los pasos que se siguen en esta función son:</p>
+<p><strong>1.</strong> Cambiar la secuencia de entrada a un vector de letras (esto se lleva a cabo mediante la función <code>s2c()</code> del paquete <em>SeqinR</em>). <strong>2.</strong> Calcular las frecuencias de las letras en la secuencia de entrada <em>inputsequencevector</em> (de la que se desea generar secuencias aleatorias) mediante la función <code>table()</code>. <strong>3.</strong> Crear un vector de probabilidades (número de veces que aparece la letra en mi secuencia dividido entre la longitud total de la secuencia). <strong>4.</strong> Hacer X secuencias aleatorias usando la función <code>sample()</code> con el argumento <em>prob</em> igual a las probabilidades obtenidas en el paso anterior. <strong>5.</strong> Como resultado final se devuelve el vector de secuencias aleatorias.</p>
+<p><em>Ejemplo</em></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">generateSeqsWithMultinomialModel</span>(<span class="st">&quot;ATTGGCACT&quot;</span>,<span class="dv">5</span>)</a></code></pre></div>
+<pre><code>## [1] &quot;TGAGTTTCT&quot; &quot;CAAAGTTCC&quot; &quot;TTCCCAGGG&quot; &quot;AGAAATACG&quot; &quot;AGCTCTCCG&quot;</code></pre>
+<p>Visitar <code>?generateSeqsWithMultinomialModel</code> para obtener más información.</p>
 </div>
-<div id="cálculos." class="section level4">
-<h4>5. Cálculos.</h4>
-<p><strong>Media y desv estándar de las puntiaciones.</strong></p>
+<div id="obtención-de-las-puntuaciones-aleatorias." class="section level5">
+<h5>3.2. Obtención de las puntuaciones aleatorias.</h5>
+<p>Dependiendo de la secuencia donde se desee hacer el shuffling, la función <code>generateSeqsWithMultinomialModel()</code> se ejecuta sobre <em>seq1</em> o sobre <em>seq2</em>. Así pues, se obtiene un vector llamado <em>randomseqs</em> con las <em>N</em> secuencias aleatorias.</p>
+<p>A continuación, se calculan las puntuaciones entre la secuencia intacta y cada una de las secuencias aleatorias. Las puntuaciones se almacenan en un vector <em>randomscores</em> de longitud <em>N</em>.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="cf">if</span>(shuff <span class="op">==</span><span class="st"> </span><span class="dv">1</span>){</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">  randomseqs &lt;-<span class="st"> </span><span class="kw">generateSeqsWithMultinomialModel</span>(<span class="kw">as.character</span>(s1[[<span class="dv">1</span>]]), N)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">  randomscores &lt;-<span class="st"> </span><span class="kw">double</span>(N)</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">  </a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>N){</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">    score &lt;-<span class="st"> </span><span class="kw">pairwiseAlignment</span>(randomseqs[i], s2, <span class="dt">type =</span> seq_align, <span class="dt">substitutionMatrix =</span> mat, </a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">                               <span class="dt">gapOpening =</span> gap[<span class="dv">1</span>], <span class="dt">gapExtension =</span> gap[<span class="dv">2</span>], <span class="dt">scoreOnly =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb6-8" data-line-number="8">    randomscores[i] &lt;-<span class="st"> </span>score</a>
+<a class="sourceLine" id="cb6-9" data-line-number="9">  }</a>
+<a class="sourceLine" id="cb6-10" data-line-number="10">    </a>
+<a class="sourceLine" id="cb6-11" data-line-number="11">  } <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb6-12" data-line-number="12">    randomseqs &lt;-<span class="st"> </span><span class="kw">generateSeqsWithMultinomialModel</span>(<span class="kw">as.character</span>(s2[[<span class="dv">1</span>]]), N)</a>
+<a class="sourceLine" id="cb6-13" data-line-number="13">    randomscores &lt;-<span class="st"> </span><span class="kw">double</span>(N)</a>
+<a class="sourceLine" id="cb6-14" data-line-number="14">    </a>
+<a class="sourceLine" id="cb6-15" data-line-number="15">    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>N){</a>
+<a class="sourceLine" id="cb6-16" data-line-number="16">      score &lt;-<span class="st"> </span><span class="kw">pairwiseAlignment</span>(s1, randomseqs[i], <span class="dt">type =</span> seq_align, <span class="dt">substitutionMatrix =</span> mat, </a>
+<a class="sourceLine" id="cb6-17" data-line-number="17">                                 <span class="dt">gapOpening =</span> gap[<span class="dv">1</span>], <span class="dt">gapExtension =</span> gap[<span class="dv">2</span>], <span class="dt">scoreOnly =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb6-18" data-line-number="18">      randomscores[i] &lt;-<span class="st"> </span>score</a>
+<a class="sourceLine" id="cb6-19" data-line-number="19">    }</a>
+<a class="sourceLine" id="cb6-20" data-line-number="20">}</a></code></pre></div>
+</div>
+</div>
+<div id="cálculos-estadísticos." class="section level4">
+<h4>4. Cálculos estadísticos.</h4>
+<p><strong>Media y desviación estándar de las puntiaciones.</strong></p>
+<p>Se calculan la media de las puntuaciones <span class="math inline">\(\bar{x}\)</span> y su desviación estándar <span class="math inline">\(s\)</span>.</p>
+<p><em>Código:</em></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">mean</span>(randomscores)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">s &lt;-<span class="st"> </span><span class="kw">sd</span>(randomscores)</a></code></pre></div>
 <p><strong>Estimación de los parámetros de la distribución Gumbel.</strong></p>
+<p>Se estiman los parámetros de la distribución Gumbel con el método de los momentos. Sus fórmulas son:</p>
+<p><span class="math display">\[\hat{\lambda}= \frac{1.2825}{s}\]</span> <span class="math display">\[\hat{u}=\bar{x}-(0.45\cdot s)\]</span> <em>Código:</em></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">lambda &lt;-<span class="st"> </span><span class="fl">1.2825</span> <span class="op">/</span><span class="st"> </span>s</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">u &lt;-<span class="st"> </span>x <span class="op">-</span><span class="st"> </span>(<span class="fl">0.45</span><span class="op">*</span>s)</a></code></pre></div>
 <p><strong>Estimación de K</strong></p>
+<p><span class="math inline">\(K\)</span> es una constante que depende del sistema de puntuación i que verifica la relación:</p>
+<p><span class="math display">\[u = \frac{\ln(K \cdot m\cdot n)}{\lambda}\]</span> donde <span class="math inline">\(m\)</span> i <span class="math inline">\(n\)</span> son las longitudes de las secuencias de alineamiento 1 y 2, respectivamente.</p>
+<p>Su estimación se obtiene con la fórmula:</p>
+<p><span class="math display">\[\hat{K}= \frac{\exp(\hat{\lambda}\cdot \hat{u})}{m \cdot n}\]</span></p>
+<p><em>Código:</em></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">m &lt;-<span class="st"> </span><span class="kw">width</span>(s1)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">n &lt;-<span class="st"> </span><span class="kw">width</span>(s2)</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">K &lt;-<span class="st"> </span><span class="kw">exp</span>( (lambda<span class="op">*</span>u) ) <span class="op">/</span><span class="st"> </span>(m<span class="op">*</span>n)</a></code></pre></div>
 <p><strong>Estandarización de la puntuación S</strong></p>
+<p>La estandarización de las puntuaciones se obtiene con la fórmula:</p>
+<p><span class="math display">\[S'= \lambda S - \ln(K \cdot m \cdot n)\]</span></p>
+<p><em>Código:</em></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">S_prima &lt;-<span class="st"> </span>(lambda <span class="op">*</span><span class="st"> </span>S) <span class="op">-</span><span class="st"> </span><span class="kw">log</span>( (K<span class="op">*</span>m<span class="op">*</span>n) )</a></code></pre></div>
 <p><strong>Probabilidad que un alineamiento de secuencias al azar tenga una puntuación superior a la obtenida por azar.</strong></p>
+<p>Si consideramos les puntuaciones estandarizadas, entonces la probabilidad que una puntuación S’ sea igual o superior a un valor x viene dada per la expresión</p>
+<p><em>Código:</em></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">prob &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">exp</span>( <span class="kw">exp</span>(<span class="op">-</span>S_prima))</a></code></pre></div>
 </div>
 </div>
 <div id="output-de-seq_alignment." class="section level2">
