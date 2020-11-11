@@ -74,9 +74,13 @@ Para la realización de este punto, ha sido necesaria la creación de una funci�
 Los pasos que se siguen en esta función son:
 
 **1.** Cambiar la secuencia de entrada a un vector de letras (esto se lleva a cabo mediante la función `s2c()` del paquete *SeqinR*).
+
 **2.** Calcular las frecuencias de las letras en la secuencia de entrada *inputsequencevector* (de la que se desea generar secuencias aleatorias) mediante la función `table()`.
+
 **3.** Crear un vector de probabilidades (número de veces que aparece la letra en mi secuencia dividido entre la longitud total de la secuencia).
+
 **4.** Hacer X secuencias aleatorias usando la función `sample()` con el argumento *prob* igual a las probabilidades obtenidas en el paso anterior.
+
 **5.** Como resultado final se devuelve el vector de secuencias aleatorias.
 
 *Ejemplo*
@@ -121,7 +125,9 @@ if(shuff == 1){
 
 
 #### 4. Cálculos estadísticos.
-  
+
+*Para estos cálculos se consideran les puntuaciones estandarizadas.*
+
 **Media y desviación estándar de las puntiaciones.**
 
 Se calculan la media de las puntuaciones $\bar{x}$ y su desviación estándar $s$.
@@ -173,9 +179,27 @@ $$S'= \lambda S - \ln(K \cdot m \cdot n)$$
 S_prima <- (lambda * S) - log( (K*m*n) )
 ```
 
-**Probabilidad que un alineamiento de secuencias al azar tenga una puntuación superior a la obtenida por azar.**
+**Cálculo de probabilidades.**
 
-Si consideramos les puntuaciones estandarizadas, entonces la probabilidad que una puntuación S' sea igual o superior a un valor x viene dada per la expresión 
+* La probabilidad que una puntuación $S$ sea igual o superior a un valor $x$ viene dado por la expresión:
+
+$$P(S \ge x) = 1-\exp(-e^{-\lambda(x-u)})$$
+
+*La probabilidad que una puntuación S' sea igual o superior a un valor x viene dada per la expresión:
+
+$$P(S' \ge x) = 1-\exp(-e^{-x})$$
+
+* La probabilidad de obtener una puntuación tan grande como la puntuación de alineación real:
+
+```{r, eval = FALSE}
+prob2 <- sum(randomscores >= S) / N
+```
+
+* La probabilidad que un alineamiento de secuencias al azar tenga una puntuación superior a la obtenida por azar e calcula con la expresión:
+
+$$P(S') = 1-\exp(-e^{-S'}) $$
+La interpretación de $P(S')$ es que si la probabilidad es baja, entonces la puntuación de las secuencias es poco probable con la hipótesis que son generadas por azar.
+
 
 *Código:*
 ```{r, eval=FALSE}

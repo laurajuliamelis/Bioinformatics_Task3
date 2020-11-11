@@ -399,10 +399,14 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="generateseqswithmultinomialmodel" class="section level5">
 <h5>3.1. generateSeqsWithMultinomialModel()</h5>
 <p>Los pasos que se siguen en esta función son:</p>
-<p><strong>1.</strong> Cambiar la secuencia de entrada a un vector de letras (esto se lleva a cabo mediante la función <code>s2c()</code> del paquete <em>SeqinR</em>). <strong>2.</strong> Calcular las frecuencias de las letras en la secuencia de entrada <em>inputsequencevector</em> (de la que se desea generar secuencias aleatorias) mediante la función <code>table()</code>. <strong>3.</strong> Crear un vector de probabilidades (número de veces que aparece la letra en mi secuencia dividido entre la longitud total de la secuencia). <strong>4.</strong> Hacer X secuencias aleatorias usando la función <code>sample()</code> con el argumento <em>prob</em> igual a las probabilidades obtenidas en el paso anterior. <strong>5.</strong> Como resultado final se devuelve el vector de secuencias aleatorias.</p>
+<p><strong>1.</strong> Cambiar la secuencia de entrada a un vector de letras (esto se lleva a cabo mediante la función <code>s2c()</code> del paquete <em>SeqinR</em>).</p>
+<p><strong>2.</strong> Calcular las frecuencias de las letras en la secuencia de entrada <em>inputsequencevector</em> (de la que se desea generar secuencias aleatorias) mediante la función <code>table()</code>.</p>
+<p><strong>3.</strong> Crear un vector de probabilidades (número de veces que aparece la letra en mi secuencia dividido entre la longitud total de la secuencia).</p>
+<p><strong>4.</strong> Hacer X secuencias aleatorias usando la función <code>sample()</code> con el argumento <em>prob</em> igual a las probabilidades obtenidas en el paso anterior.</p>
+<p><strong>5.</strong> Como resultado final se devuelve el vector de secuencias aleatorias.</p>
 <p><em>Ejemplo</em></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">generateSeqsWithMultinomialModel</span>(<span class="st">&quot;ATTGGCACT&quot;</span>,<span class="dv">5</span>)</a></code></pre></div>
-<pre><code>## [1] &quot;TGAGTTTCT&quot; &quot;CAAAGTTCC&quot; &quot;TTCCCAGGG&quot; &quot;AGAAATACG&quot; &quot;AGCTCTCCG&quot;</code></pre>
+<pre><code>## [1] &quot;TAATACAAT&quot; &quot;TCGTTAGAA&quot; &quot;TACACACGG&quot; &quot;TCATTCTTT&quot; &quot;TTAATGATC&quot;</code></pre>
 <p>Visitar <code>?generateSeqsWithMultinomialModel</code> para obtener más información.</p>
 </div>
 <div id="obtención-de-las-puntuaciones-aleatorias." class="section level5">
@@ -433,6 +437,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="cálculos-estadísticos." class="section level4">
 <h4>4. Cálculos estadísticos.</h4>
+<p><em>Para estos cálculos se consideran les puntuaciones estandarizadas.</em></p>
 <p><strong>Media y desviación estándar de las puntiaciones.</strong></p>
 <p>Se calculan la media de las puntuaciones <span class="math inline">\(\bar{x}\)</span> y su desviación estándar <span class="math inline">\(s\)</span>.</p>
 <p><em>Código:</em></p>
@@ -457,10 +462,23 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p><span class="math display">\[S'= \lambda S - \ln(K \cdot m \cdot n)\]</span></p>
 <p><em>Código:</em></p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">S_prima &lt;-<span class="st"> </span>(lambda <span class="op">*</span><span class="st"> </span>S) <span class="op">-</span><span class="st"> </span><span class="kw">log</span>( (K<span class="op">*</span>m<span class="op">*</span>n) )</a></code></pre></div>
-<p><strong>Probabilidad que un alineamiento de secuencias al azar tenga una puntuación superior a la obtenida por azar.</strong></p>
-<p>Si consideramos les puntuaciones estandarizadas, entonces la probabilidad que una puntuación S’ sea igual o superior a un valor x viene dada per la expresión</p>
+<p><strong>Cálculo de probabilidades.</strong></p>
+<ul>
+<li>La probabilidad que una puntuación <span class="math inline">\(S\)</span> sea igual o superior a un valor <span class="math inline">\(x\)</span> viene dado por la expresión:</li>
+</ul>
+<p><span class="math display">\[P(S \ge x) = 1-\exp(-e^{-\lambda(x-u)})\]</span></p>
+<p>*La probabilidad que una puntuación S’ sea igual o superior a un valor x viene dada per la expresión:</p>
+<p><span class="math display">\[P(S' \ge x) = 1-\exp(-e^{-x})\]</span></p>
+<ul>
+<li>La probabilidad de obtener una puntuación tan grande como la puntuación de alineación real:</li>
+</ul>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">prob2 &lt;-<span class="st"> </span><span class="kw">sum</span>(randomscores <span class="op">&gt;=</span><span class="st"> </span>S) <span class="op">/</span><span class="st"> </span>N</a></code></pre></div>
+<ul>
+<li>La probabilidad que un alineamiento de secuencias al azar tenga una puntuación superior a la obtenida por azar e calcula con la expresión:</li>
+</ul>
+<p><span class="math display">\[P(S') = 1-\exp(-e^{-S'}) \]</span> La interpretación de <span class="math inline">\(P(S')\)</span> es que si la probabilidad es baja, entonces la puntuación de las secuencias es poco probable con la hipótesis que son generadas por azar.</p>
 <p><em>Código:</em></p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">prob &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">exp</span>( <span class="kw">exp</span>(<span class="op">-</span>S_prima))</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">prob &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">exp</span>( <span class="kw">exp</span>(<span class="op">-</span>S_prima))</a></code></pre></div>
 </div>
 </div>
 <div id="output-de-seq_alignment." class="section level2">
