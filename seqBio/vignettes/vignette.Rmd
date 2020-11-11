@@ -1,5 +1,5 @@
 ---
-title: "seq_alignment: Una función para la significación del alineamiento de secuencias"
+title: "seq_alignment: Una funcion para la significacion del alineamiento de secuencias"
 author: "Laura Julià Melis"
 output: rmarkdown::html_vignette
 vignette: >
