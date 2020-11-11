@@ -44,11 +44,16 @@ En esta sección se pretende explicar, paso a paso, cómo se realizó la creaci�
 
 #### 1. Lectura de las secuencias.
 
-En primer lugar, se realiza la lectura de las dos secuencias, *seq1* y *seq2*, a través de la función `readDNAStringSet()` del paquete *Biostrings*.
+En primer lugar, se realiza la lectura de las dos secuencias, *seq1* y *seq2*, a través de las funciones `readDNAStringSet()` y `readAAStringSet()` del paquete *Biostrings*, según si las secuencias són ADNs o proteinas.
 
 ```{r, eval = FALSE}
-s1 = readDNAStringSet(seq1, "fasta")
-s2 = readDNAStringSet(seq2, "fasta")
+if(seq_type == "dna"){
+  s1 = readDNAStringSet(seq1, "fasta")
+  s2 = readDNAStringSet(seq2, "fasta")
+} else{
+  s1 = readAAStringSet(seq1, "fasta")
+  s2 = readAAStringSet(seq2, "fasta")
+}
 ```
 
 #### 2. Alineamiento original (óptimo).

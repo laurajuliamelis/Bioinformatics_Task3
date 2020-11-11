@@ -6,8 +6,13 @@
 #            length(gap) == 2, length(N) == 1, shuff %in% c(1, 2))
 
 ## ---- eval = FALSE------------------------------------------------------------
-#  s1 = readDNAStringSet(seq1, "fasta")
-#  s2 = readDNAStringSet(seq2, "fasta")
+#  if(seq_type == "dna"){
+#    s1 = readDNAStringSet(seq1, "fasta")
+#    s2 = readDNAStringSet(seq2, "fasta")
+#  } else{
+#    s1 = readAAStringSet(seq1, "fasta")
+#    s2 = readAAStringSet(seq2, "fasta")
+#  }
 
 ## ---- eval = FALSE------------------------------------------------------------
 #  S <- pairwiseAlignment(s1, s2, type = seq_align, substitutionMatrix = mat,

@@ -43,8 +43,8 @@ por parejas.
 
 seq_alignment(seq1 = "P0DP27.fa", seq2 = "Q9N1R0.fa", seq_type ="protein",
               seq_align = "local", mat = data("BLOSUM62"), gap = c(-12, -2), N = 100, shuff = 1)
-seq_alignment(seq1 = "gi32121095_N_0.fa", seq2 = "gi32121095_N_1.fa", seq_type ="dna",
-              seq_align = "global", mat = data("BLOSUM6100"), gap = c(-8, -1), N = 2000, shuff)
+seq_alignment(seq1 = "gi32141095_N_0.fa", seq2 = "gi32141095_N_1.fa", seq_type ="dna",
+              seq_align = "global", mat = data("BLOSUM100"), gap = c(-8, -1), N = 2000, shuff)
 seq_alignment(seq1 = "P69905.fa", seq2 = "P01942.fa", seq_type ="protein",
               seq_align = "global", mat = data("BLOSUM62"), gap = c(10, 0.5), N =1000, shuff=1)
 

@@ -14,7 +14,7 @@ El paquete necesita una instalación báscia del software R. Además, será nece
 install.packages("devtools")
 install.packages("BiocManager")
 install.packages("seqinr")
-install.packages("reliaR")
+install.packages("extRemes")
 install.packages("gplots")
 ```
 

@@ -18,8 +18,8 @@
 #' 
 #' seq_alignment(seq1 = "P0DP27.fa", seq2 = "Q9N1R0.fa", seq_type ="protein",
 #'               seq_align = "local", mat = data("BLOSUM62"), gap = c(-12, -2), N = 100, shuff = 1)
-#' seq_alignment(seq1 = "gi32121095_N_0.fa", seq2 = "gi32121095_N_1.fa", seq_type ="dna",
-#'               seq_align = "global", mat = data("BLOSUM6100"), gap = c(-8, -1), N = 2000, shuff)
+#' seq_alignment(seq1 = "gi32141095_N_0.fa", seq2 = "gi32141095_N_1.fa", seq_type ="dna",
+#'               seq_align = "global", mat = data("BLOSUM100"), gap = c(-8, -1), N = 2000, shuff)
 #' seq_alignment(seq1 = "P69905.fa", seq2 = "P01942.fa", seq_type ="protein",
 #'               seq_align = "global", mat = data("BLOSUM62"), gap = c(10, 0.5), N =1000, shuff=1)
 #' 
@@ -40,9 +40,14 @@ seq_alignment <- function (seq1, seq2, seq_type = c("protein", "dna"), seq_align
             length(gap) == 2, length(N) == 1, shuff %in% c(1, 2))
   
   # 3. Lectura de las secuencias:
-  s1 = readDNAStringSet(seq1, "fasta")
-  s2 = readDNAStringSet(seq2, "fasta")
-
+  
+  if(seq_type == "dna"){
+    s1 = readDNAStringSet(seq1, "fasta")
+    s2 = readDNAStringSet(seq2, "fasta")
+  } else{
+    s1 = readAAStringSet(seq1, "fasta")
+    s2 = readAAStringSet(seq2, "fasta")
+  }
   
   # 4. Alineamiento original (óptimo):
   S <- pairwiseAlignment(s1, s2, type = seq_align, substitutionMatrix = mat, 
@@ -92,12 +97,11 @@ seq_alignment <- function (seq1, seq2, seq_type = c("protein", "dna"), seq_align
   prob <- 1 - exp( exp(-S_prima)) 
   
   # 6. RESULTADO GRÁFICO
-  require("reliaR", quietly = T)
+  require("extRemes", quietly = T)
   require("gplots", quietly = T) 
-  
-  dens <- dgumbel(randomscores, mu = u, sigma = lambda, log = FALSE)
-  gens <- lambda * exp((-lambda)*(randomscores-u) - exp((-lambda)*(randomscores-u)))
-  histo <- hist(randomscores, col="lightblue", breaks = 20, freq = FALSE, plot= FALSE)
+
+  fit0 <- fevd(randomscores, type = "Gumbel")
+  histo <- hist(randomscores, breaks = 20, plot= FALSE)
   y <- histo$density[max(which(histo$mids <= S))]
   
   texto <- c(gsub('.{3}$', '', seq1), gsub('.{3}$', '', seq2), seq_type, seq_align, mat, as.character(paste(gap[1], "y", gap[2])), N, shuff,
@@ -105,7 +109,7 @@ seq_alignment <- function (seq1, seq2, seq_type = c("protein", "dna"), seq_align
   texto <- as.data.frame(texto)
   rownames(texto) <- c("Nombre secuencia 1:", "Nombre secuencia 2:", "Tipo de alineamiento:", 
                        "Tipo de secuencia;", "Matriz de substitución",  "Puntuación Gap:",
-                       "Número de réplicas;", "Secuencia shuffling:", "Parámetro lambda:", 
+                       "Número de réplicas:", "Secuencia shuffling:", "Parámetro lambda:", 
                        "Parámetro u:", "Constante K:", "Score original:", "Score estandarizado (S'):", 
                        "P(S')")
   colnames(texto) <- " "
@@ -117,11 +121,10 @@ seq_alignment <- function (seq1, seq2, seq_type = c("protein", "dna"), seq_align
   }
   
   par(mfrow=c(1,2), oma = c(0, 0, 2, 0))
-  hist(randomscores, col="lightblue", freq = FALSE, xaxt='n', main = NULL)
-  axis(1, at = seq(range(randomscores)[1], range(randomscores)[2], by=10), las=1)
-  lines(dens, lty= 1, lwd = 1, col= "red")
-  text(x = S, y = (y+0.0115), labels = paste0("S=", S), cex = 0.75, font=2)
-  text(x = S, y = (y + 0.005), labels = sprintf('\u2193'), cex = 1, font=2)
+  plot(fit0, "hist", ylim=c(min(density(randomscores)$y),max(density(randomscores)$y)+0.01), 
+       col="lightblue", lty= 1, lwd = 1, hist.args = NULL)
+  text(x = S, y = 0.01, labels = paste0("S=", S), cex = 0.75, font=2)
+  text(x = S, y = 0.001, labels = sprintf('\u2193'), cex = 1, font=2)
   
   textplot(texto, valign = "top", halign = "right", cex =0.80)
   title(paste("Histograma de los N =", N,"scores"), outer = TRUE, cex.main = 1.5)
