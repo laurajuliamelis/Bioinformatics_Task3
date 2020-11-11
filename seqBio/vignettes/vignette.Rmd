@@ -43,8 +43,24 @@ stopifnot(class(seq1) == "character", class(seq2) == "character",
 En esta sección se pretende explicar, paso a paso, cómo se realizó la creación de la función y qué cálculos se computan internamente. 
 
 #### 1. Lectura de las secuencias.
+
+En primer lugar, se realiza la lectura de las dos secuencias, *seq1* y *seq2*, a través de la función `readDNAStringSet()` del paquete *Biostrings*.
+
+```{r, eval = FALSE}
+s1 = readDNAStringSet(seq1, "fasta")
+s2 = readDNAStringSet(seq2, "fasta")
+```
+
 #### 2. Creación de una funcion de haga N shufflings.
+
+
 #### 3. Alineamiento original (óptimo).
+
+```{r, eval = FALSE}
+S <- pairwiseAlignment(s1, s2, type = seq_align, substitutionMatrix = mat, 
+                       gapOpening = gap[1], gapExtension = gap[2], scoreOnly = TRUE)  
+```
+
 #### 4. Shuffling.
 #### 5. Cálculos.
   

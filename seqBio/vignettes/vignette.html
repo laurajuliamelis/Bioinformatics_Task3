@@ -381,12 +381,17 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p>En esta sección se pretende explicar, paso a paso, cómo se realizó la creación de la función y qué cálculos se computan internamente.</p>
 <div id="lectura-de-las-secuencias." class="section level4">
 <h4>1. Lectura de las secuencias.</h4>
+<p>En primer lugar, se realiza la lectura de las dos secuencias, <em>seq1</em> y <em>seq2</em>, a través de la función <code>readDNAStringSet()</code> del paquete <em>Biostrings</em>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">s1 =<span class="st"> </span><span class="kw">readDNAStringSet</span>(seq1, <span class="st">&quot;fasta&quot;</span>)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">s2 =<span class="st"> </span><span class="kw">readDNAStringSet</span>(seq2, <span class="st">&quot;fasta&quot;</span>)</a></code></pre></div>
 </div>
 <div id="creación-de-una-funcion-de-haga-n-shufflings." class="section level4">
 <h4>2. Creación de una funcion de haga N shufflings.</h4>
 </div>
 <div id="alineamiento-original-óptimo." class="section level4">
 <h4>3. Alineamiento original (óptimo).</h4>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">S &lt;-<span class="st"> </span><span class="kw">pairwiseAlignment</span>(s1, s2, <span class="dt">type =</span> seq_align, <span class="dt">substitutionMatrix =</span> mat, </a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">                       <span class="dt">gapOpening =</span> gap[<span class="dv">1</span>], <span class="dt">gapExtension =</span> gap[<span class="dv">2</span>], <span class="dt">scoreOnly =</span> <span class="ot">TRUE</span>)  </a></code></pre></div>
 </div>
 <div id="shuffling." class="section level4">
 <h4>4. Shuffling.</h4>

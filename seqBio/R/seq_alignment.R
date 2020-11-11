@@ -1,6 +1,6 @@
 #' Sequence alignment and statistical significance.
 #'
-#' La función \code{seq_alignment} muestra la significación estadística de un alineamiento
+#' La funcion \code{seq_alignment} muestra la significacion estadistica de un alineamiento
 #' por parejas.
 #' 
 #' @param seq1 Secuencia 1 en formato Fasta.
@@ -9,7 +9,7 @@
 #' @param seq_align Tipo de alineamiento: "local" o "global".
 #' @param mat Matriz de substitución: PAMn, BLOSUMn, … Ver \code{data(package="Biostrings")} para ver todas las opciones disponibles.
 #' @param gap Puntuación Gap: Open penalty, extended penalty.
-#' @param N Número de replicas.
+#' @param N Numero de replicas.
 #' @param shuff Secuencia donde se hace shuffling: 1 o 2.
 #'
 #' @return  \code{seq_alignment} devuelve un resultado gráfico (histograma de las puntiaciones estimadas) y un resultado numérico.
@@ -42,40 +42,7 @@ seq_alignment <- function (seq1, seq2, seq_type = c("protein", "dna"), seq_align
   # 3. Lectura de las secuencias:
   s1 = readDNAStringSet(seq1, "fasta")
   s2 = readDNAStringSet(seq2, "fasta")
-  
-  # 4. Creación de una funcion de haga N shufflings:
-  
-  generateSeqsWithMultinomialModel <- function(inputsequence, X){
-    
-    # Change the input sequence into a vector of letters
-    require("seqinr", quietly = T) # This function requires the SeqinR package.
-    inputsequencevector <- s2c(inputsequence)
-    
-    # Find the frequencies of the letters in the input sequence "inputsequencevector":
-    mylength <- length(inputsequencevector)
-    mytable <- table(inputsequencevector)
-    
-    # Find the names of the letters in the sequence
-    letters <- rownames(mytable)
-    numletters <- length(letters)
-    probabilities <- numeric() # Make a vector to store the probabilities of letters
-    for (i in 1:numletters){
-      letter <- letters[i]
-      count <- mytable[[i]]
-      probabilities[i] <- count/mylength
-    }
-    
-    # Make X random sequences using the multinomial model with probabilities "probabilities"
-    seqs <- numeric(X)
-    for (j in 1:X){
-      seq <- sample(letters, mylength, rep=TRUE, prob=probabilities) # Sample with replacement
-      seq <- c2s(seq)
-      seqs[j] <- seq
-    }
-    
-    # Return the vector of random sequences
-    return(seqs)
-  }
+
   
   # 4. Alineamiento original (óptimo):
   S <- pairwiseAlignment(s1, s2, type = seq_align, substitutionMatrix = mat, 

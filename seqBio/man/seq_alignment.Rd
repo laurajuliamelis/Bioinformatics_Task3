@@ -28,7 +28,7 @@ seq_alignment(
 
 \item{gap}{Puntuación Gap: Open penalty, extended penalty.}
 
-\item{N}{Número de replicas.}
+\item{N}{Numero de replicas.}
 
 \item{shuff}{Secuencia donde se hace shuffling: 1 o 2.}
 }
@@ -36,7 +36,7 @@ seq_alignment(
 \code{seq_alignment} devuelve un resultado gráfico (histograma de las puntiaciones estimadas) y un resultado numérico.
 }
 \description{
-La función \code{seq_alignment} muestra la significación estadística de un alineamiento
+La funcion \code{seq_alignment} muestra la significacion estadistica de un alineamiento
 por parejas.
 }
 \examples{
