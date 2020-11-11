@@ -63,10 +63,7 @@ generateSeqsWithMultinomialModel("ATTGGCACT",5)
 #  S_prima <- (lambda * S) - log( (K*m*n) )
 
 ## ---- eval = FALSE------------------------------------------------------------
-#  prob2 <- sum(randomscores >= S) / N
-
-## ---- eval=FALSE--------------------------------------------------------------
-#  prob <- 1 - exp( exp(-S_prima))
+#  prob <- sum(randomscores >= S) / N
 
 ## ----include=FALSE------------------------------------------------------------
 #hello

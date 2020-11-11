@@ -411,7 +411,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p><strong>5.</strong> Como resultado final se devuelve el vector de secuencias aleatorias.</p>
 <p><em>Ejemplo</em></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">generateSeqsWithMultinomialModel</span>(<span class="st">&quot;ATTGGCACT&quot;</span>,<span class="dv">5</span>)</a></code></pre></div>
-<pre><code>## [1] &quot;TGGCATGAT&quot; &quot;TGTCATGTA&quot; &quot;TGGATGCTC&quot; &quot;ACTAGGTCA&quot; &quot;CTCAATTTA&quot;</code></pre>
+<pre><code>## [1] &quot;ATTCCTAGA&quot; &quot;TAACGTAGT&quot; &quot;CTGCCACTT&quot; &quot;GTCATCGGG&quot; &quot;CTCATATCT&quot;</code></pre>
 <p>Visitar <code>?generateSeqsWithMultinomialModel</code> para obtener más información.</p>
 </div>
 <div id="obtención-de-las-puntuaciones-aleatorias." class="section level5">
@@ -473,30 +473,28 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </ul>
 <p><span class="math display">\[P(S \ge x) = 1-\exp(-e^{-\lambda(x-u)})\]</span></p>
 <ul>
-<li>La probabilidad que una puntuación S’ sea igual o superior a un valor x viene dada per la expresión:</li>
+<li>La probabilidad de que un alineamiento de secuencias al azar tenga una puntuación superior a la putuación de alineación real:</li>
 </ul>
-<p><span class="math display">\[P(S' \ge x) = 1-\exp(-e^{-x})\]</span></p>
-<ul>
-<li>La probabilidad de obtener una puntuación tan grande como la puntuación de alineación real:</li>
-</ul>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">prob2 &lt;-<span class="st"> </span><span class="kw">sum</span>(randomscores <span class="op">&gt;=</span><span class="st"> </span>S) <span class="op">/</span><span class="st"> </span>N</a></code></pre></div>
-<p>Podemos estimar que la probabilidad de obtener una puntuación tan grande como la puntuación de alineación real por azar es <em>prob2</em>, esto seria el p-valor. Si este valor es superior a 0.05 podemos concluir que las secuencias <em>seq1</em> y <em>seq2</em> no son más similares que dos secuencias aleatorias cualesquiera, por lo que probablemente no sean secuencias relacionadas.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">prob &lt;-<span class="st"> </span><span class="kw">sum</span>(randomscores <span class="op">&gt;=</span><span class="st"> </span>S) <span class="op">/</span><span class="st"> </span>N</a></code></pre></div>
+<p>Podemos estimar que la probabilidad de obtener una puntuación tan grande como la puntuación de alineación real por azar es <em>prob</em>, esto seria el p-valor. Si este valor es superior a 0.05 podemos concluir que las secuencias <em>seq1</em> y <em>seq2</em> no son más similares que dos secuencias aleatorias cualesquiera, por lo que probablemente no sean secuencias relacionadas.</p>
 <p>Dicho de otra forma, si el p-valor estimado es superior a 0.05, significaria que hay una probabilidad alta de que podamos obtener una puntuación de alineación tan alta como la puntuacion original <span class="math inline">\(S\)</span> solo por casualidad.</p>
-<ul>
-<li>La probabilidad que un alineamiento de secuencias al azar tenga una puntuación superior a la obtenida por azar e calcula con la expresión:</li>
-</ul>
-<p><span class="math display">\[P(S') = 1-\exp(-e^{-S'}) \]</span> La interpretación de <span class="math inline">\(P(S')\)</span> es que si la probabilidad es baja, entonces la puntuación de las secuencias es poco probable con la hipótesis que son generadas por azar.</p>
-<p><em>Código:</em></p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">prob &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">exp</span>( <span class="kw">exp</span>(<span class="op">-</span>S_prima))</a></code></pre></div>
 </div>
 </div>
 <div id="output-de-seq_alignment." class="section level2">
 <h2>4. <em>Output</em> de seq_alignment().</h2>
+<p>La función seq_alignment() ofrece un resultado gráfico y uno no gráfico.</p>
 <div id="resultado-gráfico" class="section level4">
 <h4>4.1. Resultado gráfico</h4>
+<p>Como <em>output</em> gráfico, aparece una nueva ventana gráfica (a partir de <code>quartz()</code> y <code>windows()</code> para los sistemas macOS y Windows, respectivamente). En ella se puede observar el histograma de los N scores obtenidos con la distribución de densidad de Gumbel (obtenida con <code>fevd(randomscores, type = &quot;Gumbel&quot;)</code>). Además, en rojo se indica con una flecha dónde se sitúa el score original (<span class="math inline">\(S\)</span>) aunque cabe mencionar que en los casos en los que las dos secuencias estén muy relacionadas, el histograma estará muy por debajo de <span class="math inline">\(S\)</span> (al hhaber aleatorizado una de las secuencias, las puntuaciones serán inferiores), y consecuentemente, la flecha no llegará a aparecer.</p>
+<p>Por otra parte, en la parte izquierda de la ventana gráfica, se puede ver un cuadro de texto con la información básica del alineamiento realizado (los argumentos de entrada de la función) y los resultados del alineamiento (los cálculos comentados en la subsección <em>3.2.</em>).</p>
 </div>
 <div id="resultado-numérico" class="section level4">
 <h4>4.2. Resultado numérico</h4>
+<p>En la consola de RStudio aparecerán dos tablas de resultados numéricos:</p>
+<ul>
+<li>Resumen numérico de las puntuaciones obtenidas al hacer shuffling: valor mínimo, valor máximo, media mediana, primer cuantil y tercer cuantil.</li>
+<li>Resultados de los cálculos comentados en la subsección <em>3.2.</em>.</li>
+</ul>
 </div>
 </div>
 <div id="ejemplos." class="section level2">

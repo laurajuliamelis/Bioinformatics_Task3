@@ -190,36 +190,34 @@ S_prima <- (lambda * S) - log( (K*m*n) )
 
 $$P(S \ge x) = 1-\exp(-e^{-\lambda(x-u)})$$
 
-* La probabilidad que una puntuación S' sea igual o superior a un valor x viene dada per la expresión:
-
-$$P(S' \ge x) = 1-\exp(-e^{-x})$$
-
-* La probabilidad de obtener una puntuación tan grande como la puntuación de alineación real:
+* La probabilidad de  que un alineamiento de secuencias al azar tenga una puntuación superior a la putuación de alineación real:
 
 ```{r, eval = FALSE}
-prob2 <- sum(randomscores >= S) / N
+prob <- sum(randomscores >= S) / N
 ```
 
-Podemos estimar que la probabilidad de obtener una puntuación tan grande como la puntuación de alineación real por azar es *prob2*, esto seria el p-valor. Si este valor es superior a 0.05 podemos concluir que las secuencias *seq1* y *seq2* no son más similares que dos secuencias aleatorias cualesquiera, por lo que probablemente no sean secuencias relacionadas.
+Podemos estimar que la probabilidad de obtener una puntuación tan grande como la puntuación de alineación real por azar es *prob*, esto seria el p-valor. Si este valor es superior a 0.05 podemos concluir que las secuencias *seq1* y *seq2* no son más similares que dos secuencias aleatorias cualesquiera, por lo que probablemente no sean secuencias relacionadas.
 
 Dicho de otra forma, si el p-valor estimado es superior a 0.05, significaria que hay una probabilidad alta de que podamos obtener una puntuación de alineación tan alta como la puntuacion original $S$ solo por casualidad.
 
-* La probabilidad que un alineamiento de secuencias al azar tenga una puntuación superior a la obtenida por azar e calcula con la expresión:
-
-$$P(S') = 1-\exp(-e^{-S'}) $$
-La interpretación de $P(S')$ es que si la probabilidad es baja, entonces la puntuación de las secuencias es poco probable con la hipótesis que son generadas por azar.
-
-
-*Código:*
-```{r, eval=FALSE}
-prob <- 1 - exp( exp(-S_prima))
-```
 
 ## 4. *Output* de seq_alignment().
 
+La función seq_alignment() ofrece un resultado gráfico y uno no gráfico.
+
 #### 4.1. Resultado gráfico
 
+Como *output* gráfico, aparece una nueva ventana gráfica (a partir de `quartz()` y `windows()` para los sistemas macOS y Windows, respectivamente). En ella se puede observar el histograma de los N scores obtenidos con la distribución de densidad de Gumbel (obtenida con `fevd(randomscores, type = "Gumbel")`). Además, en rojo se indica con una flecha dónde se sitúa el score original ($S$) aunque cabe mencionar que en los casos en los que las dos secuencias estén muy relacionadas, el histograma estará muy por debajo de $S$ (al hhaber aleatorizado una de las secuencias, las puntuaciones serán inferiores), y consecuentemente, la flecha no llegará a aparecer. 
+
+Por otra parte, en la parte izquierda de la ventana gráfica, se puede ver un cuadro de texto con
+la información básica del alineamiento realizado (los argumentos de entrada de la función) y los resultados del alineamiento (los cálculos comentados en la subsección *3.2.*).
+ 
 #### 4.2. Resultado numérico
+
+En la consola de RStudio aparecerán dos tablas de resultados numéricos: 
+
+* Resumen numérico de las puntuaciones obtenidas al hacer shuffling: valor mínimo, valor máximo, media mediana, primer cuantil y tercer cuantil.
+* Resultados de los cálculos comentados en la subsección *3.2.*.
 
 
 ## 5. Ejemplos.

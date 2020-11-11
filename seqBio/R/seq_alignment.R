@@ -18,10 +18,10 @@
 #' 
 #' seq_alignment(seq1 = "P0DP27.fa", seq2 = "Q9N1R0.fa", seq_type ="protein",
 #'               seq_align = "local", mat = data("BLOSUM62"), gap = c(-12, -2), N = 100, shuff = 1)
+#'               
+#' mat <- nucleotideSubstitutionMatrix(match = 1, mismatch = -3, baseOnly = TRUE)
 #' seq_alignment(seq1 = "gi32141095_N_0.fa", seq2 = "gi32141095_N_1.fa", seq_type ="dna",
-#'               seq_align = "global", mat = data("BLOSUM100"), gap = c(-8, -1), N = 2000, shuff)
-#' seq_alignment(seq1 = "P69905.fa", seq2 = "P01942.fa", seq_type ="protein",
-#'               seq_align = "global", mat = data("BLOSUM62"), gap = c(10, 0.5), N =1000, shuff=1)
+#'               seq_align = "global", mat = mat, gap = c(-8, -1), N = 2000, shuff)
 #' 
 #' @references \url{https://a-little-book-of-r-for-bioinformatics.readthedocs.io/en/latest/src/chapter4.html}
 #'
@@ -44,14 +44,16 @@ seq_alignment <- function (seq1, seq2, seq_type = c("protein", "dna"), seq_align
   if(seq_type == "dna"){
     s1 = readDNAStringSet(seq1, "fasta")
     s2 = readDNAStringSet(seq2, "fasta")
+    name_mat = "DNAScoringMat"
   } else{
     s1 = readAAStringSet(seq1, "fasta")
     s2 = readAAStringSet(seq2, "fasta")
+    name_mat = mat
   }
   
   # 4. Alineamiento original (óptimo):
   S <- pairwiseAlignment(s1, s2, type = seq_align, substitutionMatrix = mat, 
-                             gapOpening = gap[1], gapExtension = gap[2], scoreOnly = TRUE)  
+                        gapOpening = gap[1], gapExtension = gap[2], scoreOnly = TRUE)  
   
   # 5. Shuffling:
   if(shuff == 1){
@@ -93,8 +95,8 @@ seq_alignment <- function (seq1, seq2, seq_type = c("protein", "dna"), seq_align
   S_prima <- (lambda * S) - log( (K*m*n) )
   
   ### 6.5. Probabilidad que un alineamiento de secuencias al azar tenga una
-  ###      puntuación superior a la obtenida por azar
-  prob <- 1 - exp( exp(-S_prima)) 
+  ###      puntuación superior a la putuación original
+  prob <- sum(randomscores >= S) / N
   
   # 6. RESULTADO GRÁFICO
   require("extRemes", quietly = T)
@@ -104,7 +106,7 @@ seq_alignment <- function (seq1, seq2, seq_type = c("protein", "dna"), seq_align
   histo <- hist(randomscores, breaks = 20, plot= FALSE)
   y <- histo$density[max(which(histo$mids <= S))]
   
-  texto <- c(gsub('.{3}$', '', seq1), gsub('.{3}$', '', seq2), seq_type, seq_align, mat, as.character(paste(gap[1], "y", gap[2])), N, shuff,
+  texto <- c(gsub('.{3}$', '', seq1), gsub('.{3}$', '', seq2), seq_type, seq_align, name_mat, as.character(paste(gap[1], "y", gap[2])), N, shuff,
              round(lambda,4), round(u,4), round(K,4), S, round(S_prima,4), round(prob,4))
   texto <- as.data.frame(texto)
   rownames(texto) <- c("Nombre secuencia 1:", "Nombre secuencia 2:", "Tipo de alineamiento:", 
@@ -115,16 +117,16 @@ seq_alignment <- function (seq1, seq2, seq_type = c("protein", "dna"), seq_align
   colnames(texto) <- " "
   
   if(.Platform$OS.type == "unix") {
-    quartz(width = 8, height = 7)
+    quartz(width = 10, height = 7)
   } else {
-    windows(width = 10)
+    windows(width = 10, height = 7)
   }
   
   par(mfrow=c(1,2), oma = c(0, 0, 2, 0))
-  plot(fit0, "hist", ylim=c(min(density(randomscores)$y),max(density(randomscores)$y)+0.01), 
-       col="lightblue", lty= 1, lwd = 1, hist.args = NULL)
-  text(x = S, y = 0.01, labels = paste0("S=", S), cex = 0.75, font=2)
-  text(x = S, y = 0.001, labels = sprintf('\u2193'), cex = 1, font=2)
+  plot(fit0, "hist", ylim=c(min(density(randomscores)$y),max(density(randomscores)$y)+0.05), 
+       col="lightblue", lty= 1, lwd = 1, main = " ")
+  text(x = S, y = 0.003, labels = paste0("S=", S), cex = 0.75, font=2, col ="red")
+  text(x = S, y = 0.001, labels = sprintf('\u2193'), cex = 1, font=2, col ="red")
   
   textplot(texto, valign = "top", halign = "right", cex =0.80)
   title(paste("Histograma de los N =", N,"scores"), outer = TRUE, cex.main = 1.5)
@@ -140,9 +142,9 @@ seq_alignment <- function (seq1, seq2, seq_type = c("protein", "dna"), seq_align
   txt2 <- "Otros resultados numéricos:"
   cat(txt2, fill = TRUE)
   cat(rep("=", nchar(txt2)), sep = "", fill = TRUE)
-  nums <- c(lambda, u, K, S, S_prima, prob)
+  nums <- c(round(lambda,2) , round(u,2), round(K,2), round(S,2), round(S_prima,2), round(prob,2))
   nums <- as.data.frame(nums)
-  rownames(nums) <- c("lambda", "u", "K", "S", "S'", "P(S' >= x)")
+  rownames(nums) <- c("lambda", "u", "K", "S", "S'", "P(x >= S)")
   colnames(nums) <- NULL
   print(nums)
   cat("\n\n")
