@@ -65,7 +65,7 @@ generateSeqsWithMultinomialModel("ATTGGCACT",5)
 ## ---- eval = FALSE------------------------------------------------------------
 #  prob <- sum(randomscores >= S) / N
 
-## -----------------------------------------------------------------------------
+## ---- message=FALSE, warning=FALSE--------------------------------------------
 library(seqBio)
 library(Biostrings)
 seq1 <- "~/GitHub/Bioinformatics_Task3/seqBio/data/gi32141095_N_0.fa"
@@ -77,7 +77,7 @@ gap = c(-4, -1)
 N = 200
 shuff = 2
 
-## -----------------------------------------------------------------------------
+## ---- message=FALSE, warning=FALSE--------------------------------------------
 seq_alignment(seq1, seq2, seq_type, seq_align, mat, gap, N, shuff)
 
 ## -----------------------------------------------------------------------------
@@ -90,6 +90,6 @@ gap = c(-12, -2)
 N = 1000
 shuff = 1
 
-## -----------------------------------------------------------------------------
+## ---- message=FALSE, warning=FALSE--------------------------------------------
 seq_alignment(seq1, seq2, seq_type, seq_align, mat, gap, N, shuff)
 

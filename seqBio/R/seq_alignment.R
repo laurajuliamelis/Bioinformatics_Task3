@@ -117,11 +117,11 @@ seq_alignment <- function (seq1, seq2, seq_type = c("protein", "dna"), seq_align
                        "P(x >= S)")
   colnames(texto) <- " "
   
-  if(.Platform$OS.type == "unix") {
-    quartz(width = 10, height = 7)
-  } else {
-    windows(width = 10, height = 7)
-  }
+#  if(.Platform$OS.type == "unix") {
+#    quartz(width = 10, height = 7)
+#  } else {
+#    windows(width = 10, height = 7)
+#  }
   
   par(mfrow=c(1,2), oma = c(0, 0, 2, 0))
   plot(fit0, "hist", ylim=c(min(density(randomscores)$y),max(density(randomscores)$y)+0.05), 
@@ -133,7 +133,6 @@ seq_alignment <- function (seq1, seq2, seq_type = c("protein", "dna"), seq_align
   title(paste("Histograma de los N =", N,"scores"), outer = TRUE, cex.main = 1.5)
   
   # 7. REUSLTADO NUMÉRICO
-  cat("\n\n")
   txt1 <- "Resumen numérico de las puntuaciones obtenidas al hacer shuffling:"
   cat(txt1, fill = TRUE)
   cat(rep("=", nchar(txt1)), sep = "", fill = TRUE)
