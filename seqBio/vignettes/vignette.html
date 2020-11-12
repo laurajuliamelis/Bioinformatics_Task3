@@ -411,7 +411,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p><strong>5.</strong> Como resultado final se devuelve el vector de secuencias aleatorias.</p>
 <p><em>Ejemplo</em></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">generateSeqsWithMultinomialModel</span>(<span class="st">&quot;ATTGGCACT&quot;</span>,<span class="dv">5</span>)</a></code></pre></div>
-<pre><code>## [1] &quot;GTGAGCCTA&quot; &quot;AGACGAGGT&quot; &quot;GTAGGGAAG&quot; &quot;CGCGTTTAC&quot; &quot;TTTTCTCAC&quot;</code></pre>
+<pre><code>## [1] &quot;GATTTGGAC&quot; &quot;CAGGAGTAT&quot; &quot;GGTTCTTTG&quot; &quot;GAGACTTGG&quot; &quot;TCCGGCTAA&quot;</code></pre>
 <p>Visitar <code>?generateSeqsWithMultinomialModel</code> para obtener más información.</p>
 </div>
 <div id="obtención-de-las-puntuaciones-aleatorias." class="section level5">
@@ -532,7 +532,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ## S         -73.00
 ## S'         -1.02
 ## P(x &gt;= S)   0.90</code></pre>
-<p>En este caso, la distribución de las puntuaciones obtenidas al azar sigue una distribución Gumbel(<span class="math inline">\(\lambda=0.22\)</span>, <span class="math inline">\(u=-68.37\)</span>). El <em>score</em> original es bajo, -73, apuntando a que las dos secuencias de ADN no están relacionadas. A partir del histograma se puede observar que S se encuentra en la mediana de la distribución, y además, la probabilidad de que el alineamiento de secuencias al azar tenga una puntuación superior a la putuación de alineación original es muy alta, 0.9, confirmando así que las dos secuencias no tienen relación: al aleatorizar una de las secuencias y calcular la puntuacion del nuevo alineamiento, se obtienen puntuaciones similares a la puntuacion con las secuencias reales.</p>
+<p>En este caso, la distribución de las puntuaciones obtenidas al azar sigue una distribución Gumbel(<span class="math inline">\(\lambda=0.22\)</span>, <span class="math inline">\(u=-68.37\)</span>). El <em>score</em> original es bajo, -73, apuntando a que las dos secuencias de ADN no están relacionadas. A partir del histograma se puede observar que S se encuentra dentro de la distribución, y además, la probabilidad de que el alineamiento de secuencias al azar tenga una puntuación superior a la putuación de alineación original es muy alta, 0.9, confirmando así que las dos secuencias no tienen relación: al aleatorizar una de las secuencias y calcular la puntuacion del nuevo alineamiento, se obtienen puntuaciones similares a la puntuacion con las secuencias reales.</p>
 </div>
 <div id="secuencia-de-proteinas." class="section level4">
 <h4>5.2. Secuencia de proteinas.</h4>
