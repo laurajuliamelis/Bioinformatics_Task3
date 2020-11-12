@@ -252,7 +252,7 @@ set.seed(100)
 seq_alignment(seq1, seq2, seq_type, seq_align, mat, gap, N, shuff)
 ```
 
-En este caso, la distribución de las puntuaciones obtenidas al azar sigue una distribución Gumbel($\lambda=0.23$, $u=-48.72$). El *score* original es bajo, -46, apuntando a que las dos secuencias de ADN no están relacionadas. A partir del histograma se puede observar que S se encuentra en la mediana de la distribución, y además, la probabilidad de que el alineamiento de secuencias al azar tenga una puntuación superior a la putuación de alineación original es muy alta, 0.54, confirmando así que las dos secuencias no tienen relación: al aleatorizar una de las secuencias y calcular la puntuacion del nuevo alineamiento, se obtienen puntuaciones similares a la puntuacion con las secuencias reales.
+En este caso, la distribución de las puntuaciones obtenidas al azar sigue una distribución Gumbel($\lambda=0.22$, $u=-68.37$). El *score* original es bajo, -73, apuntando a que las dos secuencias de ADN no están relacionadas. A partir del histograma se puede observar que S se encuentra en la mediana de la distribución, y además, la probabilidad de que el alineamiento de secuencias al azar tenga una puntuación superior a la putuación de alineación original es muy alta, 0.9, confirmando así que las dos secuencias no tienen relación: al aleatorizar una de las secuencias y calcular la puntuacion del nuevo alineamiento, se obtienen puntuaciones similares a la puntuacion con las secuencias reales.
 
 #### 5.2. Secuencia de proteinas. 
 
