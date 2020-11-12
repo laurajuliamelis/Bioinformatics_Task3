@@ -245,6 +245,7 @@ shuff = 2
 *Llamada a seq_alignment() y resultados:*
 ```{r, message=FALSE, warning=FALSE, fig.align='center', fig.height=7, fig.width=10}
 seq_alignment(seq1, seq2, seq_type, seq_align, mat, gap, N, shuff)
+dev.off()
 ```
 
 
@@ -271,6 +272,7 @@ shuff = 1
 *Llamada a seq_alignment() y resultados:*
 ```{r, message=FALSE, warning=FALSE, fig.align='center', fig.height=7, fig.width=10}
 seq_alignment(seq1, seq2, seq_type, seq_align, mat, gap, N, shuff)
+dev.off()
 ```
 
 Observemos cómo la puntuación original (301) es mucho más alta que las puntuaciones obtenidas con el procedimiento *shuffling*, que tanto con el histograma como con el resumen numérico vemos que están entre 22 y 60. Así pues, fijando una hipótesis nula de independencia de secuencias, comprobamos que el *p-valor* es 0 y por lo tanto se concluiria que las dos secuencias (como ya sabiamos al principio) sí que tienen relación y entonces el aleatorizar una de las secuencias no nos permite obtener una puntuación tan alta como la puntuación original (la puntuación alta en el alineamiento original no es debida al azar).

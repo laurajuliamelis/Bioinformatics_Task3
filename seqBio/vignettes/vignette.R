@@ -79,6 +79,7 @@ shuff = 2
 
 ## ---- message=FALSE, warning=FALSE, fig.align='center', fig.height=7, fig.width=10----
 seq_alignment(seq1, seq2, seq_type, seq_align, mat, gap, N, shuff)
+dev.off()
 
 ## -----------------------------------------------------------------------------
 seq1 <- "~/GitHub/Bioinformatics_Task3/seqBio/data/P0DP27.fa"
@@ -92,4 +93,5 @@ shuff = 1
 
 ## ---- message=FALSE, warning=FALSE, fig.align='center', fig.height=7, fig.width=10----
 seq_alignment(seq1, seq2, seq_type, seq_align, mat, gap, N, shuff)
+dev.off()
 
