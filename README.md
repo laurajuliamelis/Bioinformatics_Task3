@@ -1,10 +1,10 @@
 # seqBio: An R package
 
-El paquete seqBio contiene la funcion seq_alignment(), util para estudiar la significacion estadistica de un alineamiento por parejas.
+El paquete seqBio contiene dos objetos: las funciones seq_alignment() y generateSeqsWithMultinomialModel(). La primera función es útil para estudiar la significación del alineamiento de secuencias y para ello, reliza el cálculo de la probabilidad de que la puntuación del alineamiento ha sido obtenida por azar (aplicando la estrategia de shuffling). La función generateSeqsWithMultinomialModel() es una función auxiliar dentro de seq_alignment(), necesaria para generar un numero determinado de secuencias aleatorias.
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+Estas instrucciones proporcionan los pasos a seguir para instalarse el paquete en su propia máquina local de manera que podrá ejecutar las funciones, ir a la ayuda de R para ver su utilización y visitar un informe dinamico (vignette) para obtener una explicación más larga y detallada sobre el paquete y sus funciones. 
 
 ### Prerequisitos
 
