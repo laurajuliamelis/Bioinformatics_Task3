@@ -131,8 +131,6 @@ if(shuff == 1){
 
 #### 4. Cálculos estadísticos.
 
-*Para estos cálculos se consideran les puntuaciones estandarizadas.*
-
 **Media y desviación estándar de las puntiaciones.**
 
 Se calculan la media de las puntuaciones $\bar{x}$ y su desviación estándar $s$.
