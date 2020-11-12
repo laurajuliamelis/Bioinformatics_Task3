@@ -243,7 +243,7 @@ shuff = 2
 ```
 
 *Llamada a seq_alignment() y resultados:*
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, fig.align='center', fig.height=7, fig.width=10}
 seq_alignment(seq1, seq2, seq_type, seq_align, mat, gap, N, shuff)
 ```
 
@@ -269,7 +269,7 @@ shuff = 1
 ```
 
 *Llamada a seq_alignment() y resultados:*
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, fig.align='center', fig.height=7, fig.width=10}
 seq_alignment(seq1, seq2, seq_type, seq_align, mat, gap, N, shuff)
 ```
 

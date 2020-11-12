@@ -132,7 +132,7 @@ seq_alignment <- function (seq1, seq2, seq_type = c("protein", "dna"), seq_align
   textplot(texto, valign = "top", halign = "right", cex =0.80)
   title(paste("Histograma de los N =", N,"scores"), outer = TRUE, cex.main = 1.5)
   
-  # 7. REUSLTADO NUMÉRICO
+  # 7. RESULTADO NUMÉRICO
   txt1 <- "Resumen numérico de las puntuaciones obtenidas al hacer shuffling:"
   cat(txt1, fill = TRUE)
   cat(rep("=", nchar(txt1)), sep = "", fill = TRUE)
