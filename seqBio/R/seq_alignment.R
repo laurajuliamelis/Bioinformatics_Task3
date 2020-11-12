@@ -120,8 +120,8 @@ seq_alignment <- function (seq1, seq2, seq_type = c("protein", "dna"), seq_align
   par(mfrow=c(1,2), oma = c(0, 0, 2, 0))
   plot(fit0, "hist", ylim=c(min(density(randomscores)$y),max(density(randomscores)$y)+0.05), 
        col="lightblue", lty= 1, lwd = 1, main = " ")
-  text(x = S, y = 0.005, labels = paste0("S=", S), cex = 0.75, font=2, col ="red")
-  text(x = S, y = 0.002, labels = sprintf('\u2193'), cex = 1, font=2, col ="red")
+  text(x = S, y = 0.008, labels = paste0("S=", S), cex = 0.75, font=2, col ="red")
+  text(x = S, y = 0.004, labels = sprintf('\u2193'), cex = 1, font=2, col ="red")
   
   textplot(texto, valign = "top", halign = "right", cex =0.80)
   title(paste("Histograma de los N =", N,"scores"), outer = TRUE, cex.main = 1.5)
