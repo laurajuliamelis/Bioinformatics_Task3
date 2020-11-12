@@ -244,6 +244,10 @@ shuff = 2
 
 *Llamada a seq_alignment() y resultados:*
 
+```{r, include=FALSE}
+set.seed(100)
+```
+
 ```{r, message=FALSE, warning=FALSE, fig.align='left', fig.height=5, fig.width=7}
 seq_alignment(seq1, seq2, seq_type, seq_align, mat, gap, N, shuff)
 ```
@@ -269,6 +273,10 @@ shuff = 1
 ```
 
 *Llamada a seq_alignment() y resultados:*
+
+```{r, include=FALSE}
+set.seed(100)
+```
 
 ```{r, message=FALSE, warning=FALSE, fig.align='left', fig.height=5, fig.width=7}
 seq_alignment(seq1, seq2, seq_type, seq_align, mat, gap, N, shuff)
