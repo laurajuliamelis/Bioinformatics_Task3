@@ -1,16 +1,16 @@
 ---
-title: "seq_alignment: Una funcion para la significacion del alineamiento de secuencias"
+title: "seqBio: A sequence alginment package"
 author: "Laura Julià Melis"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{seq_alignment: Una funcion para la significacion del alineamiento de secuencias}
+  %\VignetteIndexEntry{seqBio: A sequence alginment package}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
 
 ## 1. Introducción.
 
-El paquete **seqBio** contiene un solo objeto, que es la función `seq_alignment()`. Esta función es útil para estudiar la significación del alineamiento de secuencias y para ello, reliza el cálculo de la probabilidad de que la puntuación del alineamiento ha sido obtenida por azar (aplicando la estrategia de *shuffling*).
+El paquete **seqBio** contiene dos objetos: las funciones `seq_alignment()` y `generateSeqsWithMultinomialModel()`. La primera función es útil para estudiar la significación del alineamiento de secuencias y para ello, reliza el cálculo de la probabilidad de que la puntuación del alineamiento ha sido obtenida por azar (aplicando la estrategia de *shuffling*). La función `generateSeqsWithMultinomialModel()` es una función auxiliar dentro de `seq_alignment()`, necesaria para generar un numero determinado de secuencias aleatorias.
 
 ## 2. Argumentos de seq_alignment(). 
 
