@@ -65,6 +65,31 @@ generateSeqsWithMultinomialModel("ATTGGCACT",5)
 ## ---- eval = FALSE------------------------------------------------------------
 #  prob <- sum(randomscores >= S) / N
 
-## ----include=FALSE------------------------------------------------------------
-#hello
+## -----------------------------------------------------------------------------
+library(seqBio)
+library(Biostrings)
+seq1 <- "~/GitHub/Bioinformatics_Task3/seqBio/data/gi32141095_N_0.fa"
+seq2 <- "~/GitHub/Bioinformatics_Task3/seqBio/data/gi32141095_N_1.fa"
+seq_type ="dna"
+seq_align = "global"
+mat = nucleotideSubstitutionMatrix(match = 1, mismatch = -3, baseOnly = TRUE)
+gap = c(-4, -1)
+N = 200
+shuff = 2
+
+## -----------------------------------------------------------------------------
+seq_alignment(seq1, seq2, seq_type, seq_align, mat, gap, N, shuff)
+
+## -----------------------------------------------------------------------------
+seq1 <- "~/GitHub/Bioinformatics_Task3/seqBio/data/P0DP27.fa"
+seq2 <- "~/GitHub/Bioinformatics_Task3/seqBio/data/Q9N1R0.fa"
+seq_type ="protein"
+seq_align = "local"
+mat = data("BLOSUM62")
+gap = c(-12, -2)
+N = 1000
+shuff = 1
+
+## -----------------------------------------------------------------------------
+seq_alignment(seq1, seq2, seq_type, seq_align, mat, gap, N, shuff)
 

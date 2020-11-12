@@ -411,7 +411,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p><strong>5.</strong> Como resultado final se devuelve el vector de secuencias aleatorias.</p>
 <p><em>Ejemplo</em></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">generateSeqsWithMultinomialModel</span>(<span class="st">&quot;ATTGGCACT&quot;</span>,<span class="dv">5</span>)</a></code></pre></div>
-<pre><code>## [1] &quot;ATTCCTAGA&quot; &quot;TAACGTAGT&quot; &quot;CTGCCACTT&quot; &quot;GTCATCGGG&quot; &quot;CTCATATCT&quot;</code></pre>
+<pre><code>## [1] &quot;CTATCAATT&quot; &quot;TCTCTGCGC&quot; &quot;TTCTAGTAT&quot; &quot;AGCACTAAG&quot; &quot;TTGTCCCAT&quot;</code></pre>
 <p>Visitar <code>?generateSeqsWithMultinomialModel</code> para obtener más información.</p>
 </div>
 <div id="obtención-de-las-puntuaciones-aleatorias." class="section level5">
@@ -485,7 +485,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p>La función seq_alignment() ofrece un resultado gráfico y uno no gráfico.</p>
 <div id="resultado-gráfico" class="section level4">
 <h4>4.1. Resultado gráfico</h4>
-<p>Como <em>output</em> gráfico, aparece una nueva ventana gráfica (a partir de <code>quartz()</code> y <code>windows()</code> para los sistemas macOS y Windows, respectivamente). En ella se puede observar el histograma de los N scores obtenidos con la distribución de densidad de Gumbel (obtenida con <code>fevd(randomscores, type = &quot;Gumbel&quot;)</code>). Además, en rojo se indica con una flecha dónde se sitúa el score original (<span class="math inline">\(S\)</span>) aunque cabe mencionar que en los casos en los que las dos secuencias estén muy relacionadas, el histograma estará muy por debajo de <span class="math inline">\(S\)</span> (al hhaber aleatorizado una de las secuencias, las puntuaciones serán inferiores), y consecuentemente, la flecha no llegará a aparecer.</p>
+<p>Como <em>output</em> gráfico, aparece una nueva ventana gráfica (a partir de <code>quartz()</code> y <code>windows()</code> para los sistemas macOS y Windows, respectivamente). En ella se puede observar el histograma de los N scores obtenidos con la distribución de densidad de Gumbel (obtenida con <code>fevd(randomscores, type = &quot;Gumbel&quot;)</code>). Además, en rojo se indica con una flecha dónde se sitúa el score original (<span class="math inline">\(S\)</span>) aunque cabe mencionar que en los casos en los que las dos secuencias estén muy relacionadas, el histograma estará muy por debajo de <span class="math inline">\(S\)</span> (al haber aleatorizado una de las secuencias, las puntuaciones serán inferiores), y consecuentemente, la flecha no llegará a aparecer.</p>
 <p>Por otra parte, en la parte izquierda de la ventana gráfica, se puede ver un cuadro de texto con la información básica del alineamiento realizado (los argumentos de entrada de la función) y los resultados del alineamiento (los cálculos comentados en la subsección <em>3.2.</em>).</p>
 </div>
 <div id="resultado-numérico" class="section level4">
@@ -499,7 +499,129 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="ejemplos." class="section level2">
 <h2>5. Ejemplos.</h2>
-<p>This section shows how to use <code>linreg()</code> on a well known dataset such as iris.</p>
+<p>En esta sección se muestra la utilización de <code>seq_alignment()</code> en un par de secuencias de nucleótidos, y un par de secuencias de aminoácidos.</p>
+<div id="secuencia-de-adn." class="section level4">
+<h4>5.1. Secuencia de ADN.</h4>
+<p>Utilizaremos dos cadenas de nucleótidos que están guardadas en la carpeta <em>data</em> dentro de este mismo paquete. Se realizará un alineamiento global, con 200 réplicas en las que la secuencia que se aleatorizará será la segunda. La matriz de puntuaciones se creará utilizando la función <code>nucleotideSubstitutionMatrix()</code>.</p>
+<p><em>Variables de entrada:</em></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">library</span>(seqBio)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw">library</span>(Biostrings)</a></code></pre></div>
+<pre><code>## Loading required package: BiocGenerics</code></pre>
+<pre><code>## Loading required package: parallel</code></pre>
+<pre><code>## 
+## Attaching package: 'BiocGenerics'</code></pre>
+<pre><code>## The following objects are masked from 'package:parallel':
+## 
+##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+##     clusterExport, clusterMap, parApply, parCapply, parLapply,
+##     parLapplyLB, parRapply, parSapply, parSapplyLB</code></pre>
+<pre><code>## The following objects are masked from 'package:stats':
+## 
+##     IQR, mad, sd, var, xtabs</code></pre>
+<pre><code>## The following objects are masked from 'package:base':
+## 
+##     Filter, Find, Map, Position, Reduce, anyDuplicated, append,
+##     as.data.frame, basename, cbind, colnames, dirname, do.call,
+##     duplicated, eval, evalq, get, grep, grepl, intersect, is.unsorted,
+##     lapply, mapply, match, mget, order, paste, pmax, pmax.int, pmin,
+##     pmin.int, rank, rbind, rownames, sapply, setdiff, sort, table,
+##     tapply, union, unique, unsplit, which, which.max, which.min</code></pre>
+<pre><code>## Loading required package: S4Vectors</code></pre>
+<pre><code>## Loading required package: stats4</code></pre>
+<pre><code>## 
+## Attaching package: 'S4Vectors'</code></pre>
+<pre><code>## The following object is masked from 'package:base':
+## 
+##     expand.grid</code></pre>
+<pre><code>## Loading required package: IRanges</code></pre>
+<pre><code>## Loading required package: XVector</code></pre>
+<pre><code>## 
+## Attaching package: 'Biostrings'</code></pre>
+<pre><code>## The following object is masked from 'package:seqinr':
+## 
+##     translate</code></pre>
+<pre><code>## The following object is masked from 'package:base':
+## 
+##     strsplit</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">seq1 &lt;-<span class="st"> &quot;~/GitHub/Bioinformatics_Task3/seqBio/data/gi32141095_N_0.fa&quot;</span></a>
+<a class="sourceLine" id="cb28-2" data-line-number="2">seq2 &lt;-<span class="st"> &quot;~/GitHub/Bioinformatics_Task3/seqBio/data/gi32141095_N_1.fa&quot;</span></a>
+<a class="sourceLine" id="cb28-3" data-line-number="3">seq_type =<span class="st">&quot;dna&quot;</span></a>
+<a class="sourceLine" id="cb28-4" data-line-number="4">seq_align =<span class="st"> &quot;global&quot;</span></a>
+<a class="sourceLine" id="cb28-5" data-line-number="5">mat =<span class="st"> </span><span class="kw">nucleotideSubstitutionMatrix</span>(<span class="dt">match =</span> <span class="dv">1</span>, <span class="dt">mismatch =</span> <span class="dv">-3</span>, <span class="dt">baseOnly =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb28-6" data-line-number="6">gap =<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">4</span>, <span class="dv">-1</span>)</a>
+<a class="sourceLine" id="cb28-7" data-line-number="7">N =<span class="st"> </span><span class="dv">200</span></a>
+<a class="sourceLine" id="cb28-8" data-line-number="8">shuff =<span class="st"> </span><span class="dv">2</span></a></code></pre></div>
+<p><em>Llamada a seq_alignment() y resultados:</em></p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">seq_alignment</span>(seq1, seq2, seq_type, seq_align, mat, gap, N, shuff)</a></code></pre></div>
+<pre><code>## 
+## Attaching package: 'extRemes'</code></pre>
+<pre><code>## The following objects are masked from 'package:stats':
+## 
+##     qqnorm, qqplot</code></pre>
+<pre><code>## 
+## Attaching package: 'gplots'</code></pre>
+<pre><code>## The following object is masked from 'package:IRanges':
+## 
+##     space</code></pre>
+<pre><code>## The following object is masked from 'package:S4Vectors':
+## 
+##     space</code></pre>
+<pre><code>## The following object is masked from 'package:stats':
+## 
+##     lowess</code></pre>
+<pre><code>## 
+## 
+## Resumen numérico de las puntuaciones obtenidas al hacer shuffling:
+## ==================================================================
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  -79.00  -70.00  -67.00  -66.24  -62.00  -49.00 
+## 
+## 
+## Otros resultados numéricos:
+## ===========================
+##                 
+## lambda      0.21
+## u         -69.01
+## K           0.00
+## S         -73.00
+## S'         -0.83
+## P(x &gt;= S)   0.88</code></pre>
+<p>En este caso, la distribución de las puntuaciones obtenidas al azar sigue una distribución Gumbel(<span class="math inline">\(\lambda=0.23\)</span>, <span class="math inline">\(u=-48.72\)</span>). El <em>score</em> original es bajo, -46, apuntando a que las dos secuencias de ADN no están relacionadas. A partir del histograma se puede observar que S se encuentra en la mediana de la distribución, y además, la probabilidad de que el alineamiento de secuencias al azar tenga una puntuación superior a la putuación de alineación original es muy alta, 0.54, confirmando así que las dos secuencias no tienen relación: al aleatorizar una de las secuencias y calcular la puntuacion del nuevo alineamiento, se obtienen puntuaciones similares a la puntuacion con las secuencias reales.</p>
+</div>
+<div id="secuencia-de-proteinas." class="section level4">
+<h4>5.2. Secuencia de proteinas.</h4>
+<p>Obtendremos dos cadenas de aminoácidos descargándonos los archivos en formato <em>fasta</em> desde la página de UniProt, <a href="https://www.uniprot.org/" class="uri">https://www.uniprot.org/</a>. En este ejemplo, se seleccionaran dos proteinas que se sabe que están relacionadas: la Calmodulina-2 (del ratón) y la proteína de unión al calcio 1 (del toro). Los identificadores de estas dos proteinas son <a href="https://www.uniprot.org/uniprot/P0DP27">P0DP27</a> y <a href="https://www.uniprot.org/uniprot/Q9N1R0">Q9N1R0</a>, respectivamente.</p>
+<p>En este caso, se realizará un alineamiento local, se realizará la aleatorización de la primera secuencia 1000 veces y la matrix de puntuaciones a utilizar será la <strong>BLOSUM62</strong>. La penalización por abertura del gap será de -12 y, por extensión, -2.</p>
+<p><em>Variables de entrada:</em></p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1">seq1 &lt;-<span class="st"> &quot;~/GitHub/Bioinformatics_Task3/seqBio/data/P0DP27.fa&quot;</span></a>
+<a class="sourceLine" id="cb37-2" data-line-number="2">seq2 &lt;-<span class="st"> &quot;~/GitHub/Bioinformatics_Task3/seqBio/data/Q9N1R0.fa&quot;</span></a>
+<a class="sourceLine" id="cb37-3" data-line-number="3">seq_type =<span class="st">&quot;protein&quot;</span></a>
+<a class="sourceLine" id="cb37-4" data-line-number="4">seq_align =<span class="st"> &quot;local&quot;</span></a>
+<a class="sourceLine" id="cb37-5" data-line-number="5">mat =<span class="st"> </span><span class="kw">data</span>(<span class="st">&quot;BLOSUM62&quot;</span>)</a>
+<a class="sourceLine" id="cb37-6" data-line-number="6">gap =<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">12</span>, <span class="dv">-2</span>)</a>
+<a class="sourceLine" id="cb37-7" data-line-number="7">N =<span class="st"> </span><span class="dv">1000</span></a>
+<a class="sourceLine" id="cb37-8" data-line-number="8">shuff =<span class="st"> </span><span class="dv">1</span></a></code></pre></div>
+<p><em>Llamada a seq_alignment() y resultados:</em></p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw">seq_alignment</span>(seq1, seq2, seq_type, seq_align, mat, gap, N, shuff)</a></code></pre></div>
+<pre><code>## 
+## 
+## Resumen numérico de las puntuaciones obtenidas al hacer shuffling:
+## ==================================================================
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   22.00   28.00   30.00   31.26   33.25   58.00 
+## 
+## 
+## Otros resultados numéricos:
+## ===========================
+##                 
+## lambda      0.26
+## u          29.07
+## K           0.06
+## S         301.00
+## S'         71.64
+## P(x &gt;= S)   0.00</code></pre>
+<p>Observemos cómo la puntuación original (301) es mucho más alta que las puntuaciones obtenidas con el procedimiento <em>shuffling</em>, que tanto con el histograma como con el resumen numérico vemos que están entre 22 y 60. Así pues, fijando una hipótesis nula de independencia de secuencias, comprobamos que el <em>p-valor</em> es 0 y por lo tanto se concluiria que las dos secuencias (como ya sabiamos al principio) sí que tienen relación y entonces el aleatorizar una de las secuencias no nos permite obtener una puntuación tan alta como la puntuación original (la puntuación alta en el alineamiento original no es debida al azar).</p>
+</div>
 </div>
 <div id="referencias." class="section level2">
 <h2>Referencias.</h2>

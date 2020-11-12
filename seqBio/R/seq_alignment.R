@@ -106,14 +106,15 @@ seq_alignment <- function (seq1, seq2, seq_type = c("protein", "dna"), seq_align
   histo <- hist(randomscores, breaks = 20, plot= FALSE)
   y <- histo$density[max(which(histo$mids <= S))]
   
-  texto <- c(gsub('.{3}$', '', seq1), gsub('.{3}$', '', seq2), seq_type, seq_align, name_mat, as.character(paste(gap[1], "y", gap[2])), N, shuff,
+  texto <- c(sub(".*/([^.]+)\\..*", "\\1", seq1), sub(".*/([^.]+)\\..*", "\\1", seq2), seq_type, seq_align,
+             name_mat, as.character(paste(gap[1], "y", gap[2])), N, shuff,
              round(lambda,4), round(u,4), round(K,4), S, round(S_prima,4), round(prob,4))
   texto <- as.data.frame(texto)
   rownames(texto) <- c("Nombre secuencia 1:", "Nombre secuencia 2:", "Tipo de alineamiento:", 
                        "Tipo de secuencia;", "Matriz de substitución",  "Puntuación Gap:",
                        "Número de réplicas:", "Secuencia shuffling:", "Parámetro lambda:", 
                        "Parámetro u:", "Constante K:", "Score original:", "Score estandarizado (S'):", 
-                       "P(S')")
+                       "P(x >= S)")
   colnames(texto) <- " "
   
   if(.Platform$OS.type == "unix") {

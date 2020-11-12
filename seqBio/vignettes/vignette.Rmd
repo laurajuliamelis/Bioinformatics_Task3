@@ -190,7 +190,7 @@ S_prima <- (lambda * S) - log( (K*m*n) )
 
 $$P(S \ge x) = 1-\exp(-e^{-\lambda(x-u)})$$
 
-* La probabilidad de  que un alineamiento de secuencias al azar tenga una puntuación superior a la putuación de alineación real:
+* La probabilidad de que un alineamiento de secuencias al azar tenga una puntuación superior a la putuación de alineación real:
 
 ```{r, eval = FALSE}
 prob <- sum(randomscores >= S) / N
@@ -207,7 +207,7 @@ La función seq_alignment() ofrece un resultado gráfico y uno no gráfico.
 
 #### 4.1. Resultado gráfico
 
-Como *output* gráfico, aparece una nueva ventana gráfica (a partir de `quartz()` y `windows()` para los sistemas macOS y Windows, respectivamente). En ella se puede observar el histograma de los N scores obtenidos con la distribución de densidad de Gumbel (obtenida con `fevd(randomscores, type = "Gumbel")`). Además, en rojo se indica con una flecha dónde se sitúa el score original ($S$) aunque cabe mencionar que en los casos en los que las dos secuencias estén muy relacionadas, el histograma estará muy por debajo de $S$ (al hhaber aleatorizado una de las secuencias, las puntuaciones serán inferiores), y consecuentemente, la flecha no llegará a aparecer. 
+Como *output* gráfico, aparece una nueva ventana gráfica (a partir de `quartz()` y `windows()` para los sistemas macOS y Windows, respectivamente). En ella se puede observar el histograma de los N scores obtenidos con la distribución de densidad de Gumbel (obtenida con `fevd(randomscores, type = "Gumbel")`). Además, en rojo se indica con una flecha dónde se sitúa el score original ($S$) aunque cabe mencionar que en los casos en los que las dos secuencias estén muy relacionadas, el histograma estará muy por debajo de $S$ (al haber aleatorizado una de las secuencias, las puntuaciones serán inferiores), y consecuentemente, la flecha no llegará a aparecer. 
 
 Por otra parte, en la parte izquierda de la ventana gráfica, se puede ver un cuadro de texto con
 la información básica del alineamiento realizado (los argumentos de entrada de la función) y los resultados del alineamiento (los cálculos comentados en la subsección *3.2.*).
@@ -221,10 +221,58 @@ En la consola de RStudio aparecerán dos tablas de resultados numéricos:
 
 
 ## 5. Ejemplos.
-This section shows how to use `linreg()` on a well known dataset such as iris.
-```{r include=FALSE}
-#hello
+
+En esta sección se muestra la utilización de `seq_alignment()` en un par de secuencias de nucleótidos, y un par de secuencias de aminoácidos.
+
+#### 5.1. Secuencia de ADN. 
+
+Utilizaremos dos cadenas de nucleótidos que están guardadas en la carpeta *data* dentro de este mismo paquete. Se realizará un alineamiento global, con 200 réplicas en las que la secuencia que se aleatorizará será la segunda. La matriz de puntuaciones se creará utilizando la función `nucleotideSubstitutionMatrix()`.
+
+*Variables de entrada:*
+```{r}
+library(seqBio)
+library(Biostrings)
+seq1 <- "~/GitHub/Bioinformatics_Task3/seqBio/data/gi32141095_N_0.fa"
+seq2 <- "~/GitHub/Bioinformatics_Task3/seqBio/data/gi32141095_N_1.fa"
+seq_type ="dna"
+seq_align = "global"
+mat = nucleotideSubstitutionMatrix(match = 1, mismatch = -3, baseOnly = TRUE)
+gap = c(-4, -1)
+N = 200
+shuff = 2
 ```
+
+*Llamada a seq_alignment() y resultados:*
+```{r}
+seq_alignment(seq1, seq2, seq_type, seq_align, mat, gap, N, shuff)
+```
+
+En este caso, la distribución de las puntuaciones obtenidas al azar sigue una distribución Gumbel($\lambda=0.23$, $u=-48.72$). El *score* original es bajo, -46, apuntando a que las dos secuencias de ADN no están relacionadas. A partir del histograma se puede observar que S se encuentra en la mediana de la distribución, y además, la probabilidad de que el alineamiento de secuencias al azar tenga una puntuación superior a la putuación de alineación original es muy alta, 0.54, confirmando así que las dos secuencias no tienen relación: al aleatorizar una de las secuencias y calcular la puntuacion del nuevo alineamiento, se obtienen puntuaciones similares a la puntuacion con las secuencias reales.
+
+#### 5.2. Secuencia de proteinas. 
+
+Obtendremos dos cadenas de aminoácidos descargándonos los archivos en formato *fasta* desde la página de UniProt, <https://www.uniprot.org/>. En este ejemplo, se seleccionaran dos proteinas que se sabe que están relacionadas: la Calmodulina-2 (del ratón) y la proteína de unión al calcio 1 (del toro). Los identificadores de estas dos proteinas son [P0DP27](https://www.uniprot.org/uniprot/P0DP27) y [Q9N1R0](https://www.uniprot.org/uniprot/Q9N1R0), respectivamente. 
+
+En este caso, se realizará un alineamiento local, se realizará la aleatorización de la primera secuencia 1000 veces y la matrix de puntuaciones a utilizar será la **BLOSUM62**. La penalización por abertura del gap será de -12 y, por extensión, -2.
+
+*Variables de entrada:*
+```{r}
+seq1 <- "~/GitHub/Bioinformatics_Task3/seqBio/data/P0DP27.fa"
+seq2 <- "~/GitHub/Bioinformatics_Task3/seqBio/data/Q9N1R0.fa"
+seq_type ="protein"
+seq_align = "local"
+mat = data("BLOSUM62")
+gap = c(-12, -2)
+N = 1000
+shuff = 1
+```
+
+*Llamada a seq_alignment() y resultados:*
+```{r}
+seq_alignment(seq1, seq2, seq_type, seq_align, mat, gap, N, shuff)
+```
+
+Observemos cómo la puntuación original (301) es mucho más alta que las puntuaciones obtenidas con el procedimiento *shuffling*, que tanto con el histograma como con el resumen numérico vemos que están entre 22 y 60. Así pues, fijando una hipótesis nula de independencia de secuencias, comprobamos que el *p-valor* es 0 y por lo tanto se concluiria que las dos secuencias (como ya sabiamos al principio) sí que tienen relación y entonces el aleatorizar una de las secuencias no nos permite obtener una puntuación tan alta como la puntuación original (la puntuación alta en el alineamiento original no es debida al azar).
 
 ## Referencias.
 
