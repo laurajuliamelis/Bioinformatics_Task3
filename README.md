@@ -13,6 +13,7 @@ El paquete necesita una instalación báscia del software R. Además, será nece
 ```
 install.packages("devtools")
 install.packages("BiocManager")
+BiocManager::install("Biostrings")
 install.packages("seqinr")
 install.packages("extRemes")
 install.packages("gplots")
@@ -64,7 +65,6 @@ browseVignettes('seqBio')
 ```
 
 A continuación, pulsar el boton "**HTML**".
-s
 
 ## Licencia
 
