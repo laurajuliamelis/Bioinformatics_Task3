@@ -77,7 +77,7 @@ gap = c(-4, -1)
 N = 200
 shuff = 2
 
-## ---- message=FALSE, warning=FALSE, fig.align='center', fig.height=7, fig.width=10----
+## ---- message=FALSE, warning=FALSE, fig.align='left', fig.height=5, fig.width=8----
 seq_alignment(seq1, seq2, seq_type, seq_align, mat, gap, N, shuff)
 
 ## -----------------------------------------------------------------------------
@@ -90,6 +90,6 @@ gap = c(-12, -2)
 N = 1000
 shuff = 1
 
-## ---- message=FALSE, warning=FALSE, fig.align='center', fig.height=7, fig.width=10----
+## ---- message=FALSE, warning=FALSE, fig.align='left', fig.height=5, fig.width=8----
 seq_alignment(seq1, seq2, seq_type, seq_align, mat, gap, N, shuff)
 

@@ -39,3 +39,6 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 .Rproj.user
+
+# MAC temporary files
+.DS_Store
