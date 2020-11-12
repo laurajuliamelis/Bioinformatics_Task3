@@ -243,11 +243,10 @@ shuff = 2
 ```
 
 *Llamada a seq_alignment() y resultados:*
+
 ```{r, message=FALSE, warning=FALSE, fig.align='center', fig.height=7, fig.width=10}
 seq_alignment(seq1, seq2, seq_type, seq_align, mat, gap, N, shuff)
-dev.off()
 ```
-
 
 En este caso, la distribución de las puntuaciones obtenidas al azar sigue una distribución Gumbel($\lambda=0.23$, $u=-48.72$). El *score* original es bajo, -46, apuntando a que las dos secuencias de ADN no están relacionadas. A partir del histograma se puede observar que S se encuentra en la mediana de la distribución, y además, la probabilidad de que el alineamiento de secuencias al azar tenga una puntuación superior a la putuación de alineación original es muy alta, 0.54, confirmando así que las dos secuencias no tienen relación: al aleatorizar una de las secuencias y calcular la puntuacion del nuevo alineamiento, se obtienen puntuaciones similares a la puntuacion con las secuencias reales.
 
@@ -270,9 +269,9 @@ shuff = 1
 ```
 
 *Llamada a seq_alignment() y resultados:*
+
 ```{r, message=FALSE, warning=FALSE, fig.align='center', fig.height=7, fig.width=10}
 seq_alignment(seq1, seq2, seq_type, seq_align, mat, gap, N, shuff)
-dev.off()
 ```
 
 Observemos cómo la puntuación original (301) es mucho más alta que las puntuaciones obtenidas con el procedimiento *shuffling*, que tanto con el histograma como con el resumen numérico vemos que están entre 22 y 60. Así pues, fijando una hipótesis nula de independencia de secuencias, comprobamos que el *p-valor* es 0 y por lo tanto se concluiria que las dos secuencias (como ya sabiamos al principio) sí que tienen relación y entonces el aleatorizar una de las secuencias no nos permite obtener una puntuación tan alta como la puntuación original (la puntuación alta en el alineamiento original no es debida al azar).

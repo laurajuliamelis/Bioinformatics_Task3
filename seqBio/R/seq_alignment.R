@@ -117,11 +117,11 @@ seq_alignment <- function (seq1, seq2, seq_type = c("protein", "dna"), seq_align
                        "P(x >= S)")
   colnames(texto) <- " "
   
-  if(.Platform$OS.type == "unix") {
-    quartz(width = 10, height = 7)
-  } else {
-    windows(width = 10, height = 7)
-  }
+#  if(.Platform$OS.type == "unix") {
+#    quartz(width = 10, height = 7)
+#  } else {
+#    windows(width = 10, height = 7)
+#  }
   
   par(mfrow=c(1,2), oma = c(0, 0, 2, 0))
   plot(fit0, "hist", ylim=c(min(density(randomscores)$y),max(density(randomscores)$y)+0.05), 
